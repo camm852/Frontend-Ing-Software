@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { myLocalStorage, signInCall } from "../utils";
+import Swal from "sweetalert2";
+import { myLocalStorage, signInCall, tokenInfoCall } from "../utils";
 
 const currentUser = () => {
   const user = myLocalStorage.get("session");
@@ -13,16 +14,48 @@ const AuthProvider = ({ children }) => {
     let response = await signInCall(values);
     if (response.status !== 200) {
       setUser(null);
+      return false;
     } else {
-      const tokenInfo = await response.json();
-      myLocalStorage.set("session", JSON.stringify(tokenInfo));
-      setUser(JSON.stringify(tokenInfo));
+      const tokenResponse = response;
+      let tokenInfo = {};
+      if (response.status !== 200) {
+        setUser(null);
+        return false;
+      } else {
+        tokenInfo = await tokenResponse.json();
+        myLocalStorage.set("token", JSON.stringify(tokenInfo.access_token));
+        const userResponse = await tokenInfoCall(tokenInfo);
+        if (userResponse.status !== 200) {
+          setUser(null);
+          return false;
+        } else {
+          let userInfo = await userResponse.json();
+          Swal.fire({
+            title: "God job",
+            text: "Correct autentication",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+          setTimeout(() => {
+            myLocalStorage.set("session", JSON.stringify(userInfo));
+            setUser(JSON.stringify(userInfo));
+          }, 3000);
+
+          return true;
+        }
+      }
     }
   };
 
   const signOut = () => {
     myLocalStorage.remove("session");
+    myLocalStorage.remove("token");
     setUser(null);
+  };
+
+  const updateUser = () => {
+    setUser(myLocalStorage.get("session"));
   };
 
   let value = { user, signIn, signOut };

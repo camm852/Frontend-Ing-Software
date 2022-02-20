@@ -9,19 +9,26 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import { myLocalStorage } from "../../utils";
+import { myLocalStorage, userServiceCall } from "../../utils";
+import { useAuth } from "../../routes/auth-context";
 
 export const AccountProfileDetails = (props) => {
-  const userInfo = myLocalStorage.get("user");
+  const userProvider = myLocalStorage.get("session");
 
   const [values, setValues] = useState({
-    firstName: userInfo.userName,
-    lastName: userInfo.userName,
-    email: userInfo.email,
-    phone: userInfo.phone,
-    address: userInfo.address,
-    password: userInfo.password,
+    firstName: userProvider.userName,
+    email: userProvider.email,
+    phone: userProvider.phone,
+    address: userProvider.address,
+    password: userProvider.password,
   });
+
+  const updateUser = () => {
+    let response = userServiceCall(values, "update");
+    if (response.status !== 2000) {
+    } else {
+    }
+  };
 
   const handleChange = (event) => {
     setValues({
@@ -40,23 +47,11 @@ export const AccountProfileDetails = (props) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
-                label="First name"
+                label="Name"
                 name="firstName"
                 onChange={handleChange}
                 required
                 value={values.firstName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Last name"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
                 variant="outlined"
               />
             </Grid>
@@ -75,7 +70,7 @@ export const AccountProfileDetails = (props) => {
               <TextField
                 fullWidth
                 label="Adress"
-                name="adress"
+                name="address"
                 onChange={handleChange}
                 required
                 value={values.address}
@@ -88,7 +83,6 @@ export const AccountProfileDetails = (props) => {
                 label="Phone Number"
                 name="phone"
                 onChange={handleChange}
-                type="number"
                 value={values.phone}
                 variant="outlined"
               />
@@ -115,7 +109,7 @@ export const AccountProfileDetails = (props) => {
             p: 2,
           }}
         >
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={updateUser}>
             Save details
           </Button>
         </Box>

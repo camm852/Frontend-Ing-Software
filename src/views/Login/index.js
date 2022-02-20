@@ -21,8 +21,6 @@ import { login } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import userSlice from "../../redux/slices/userSlice";
-import store from "../../redux/store";
 import { useAuth } from "../../routes/auth-context";
 
 const theme = createTheme({
@@ -49,7 +47,7 @@ export default function Login() {
   });
 
   return userProvider.user ? (
-    <Navigate to="/" state={{ from: location }} replace />
+    <Navigate to="/profile" state={{ from: location }} replace />
   ) : (
     <Formik
       validationSchema={validationSchema}
@@ -59,7 +57,7 @@ export default function Login() {
       }}
       onSubmit={async (values) => {
         setLoading(true);
-        userProvider.signIn(values);
+        if (!userProvider.signIn(values)) setLoading(false);
       }}
     >
       {({

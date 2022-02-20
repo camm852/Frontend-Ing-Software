@@ -1,7 +1,7 @@
 import { signUpCall } from "../../utils";
 import Header from "../../components/Header/Header";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import {
@@ -20,6 +20,7 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Swal from "sweetalert2";
+import { useAuth } from "../../routes/auth-context";
 
 const theme = createTheme({
   typography: {
@@ -31,10 +32,14 @@ const theme = createTheme({
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const userProvide = useAuth();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(false);
 
-  return (
+  return userProvide.user ? (
+    <Navigate to="/" state={{ from: location }} replace />
+  ) : (
     <Formik
       initialValues={{
         name: "carlos",

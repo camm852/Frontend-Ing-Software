@@ -18,6 +18,7 @@ import HouseIcon from "@mui/icons-material/House";
 import { myLocalStorage } from "../utils";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Button } from "@mui/material";
+import { useAuth } from "../routes/auth-context";
 
 const drawerWidth = 260;
 
@@ -76,11 +77,16 @@ function DashBoardSidebar(props) {
   const { children } = props;
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const user = useAuth();
 
-  const userInfo = myLocalStorage.get("user");
+  const userInfo = myLocalStorage.get("session");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const logout = () => {
+    user.signOut();
   };
 
   const drawer = (
@@ -189,6 +195,7 @@ function DashBoardSidebar(props) {
             }}
           >
             <Button
+              onClick={logout}
               startIcon={<LogoutIcon />}
               sx={{
                 borderRadius: 1,
@@ -245,6 +252,7 @@ function DashBoardSidebar(props) {
             }}
           >
             <Button
+              onClick={logout}
               startIcon={<LogoutIcon />}
               sx={{
                 borderRadius: 1,

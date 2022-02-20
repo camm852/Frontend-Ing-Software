@@ -6,16 +6,10 @@ import DashBoardSidebar from "../../components/DashBoardSidebar";
 import { useSelector, useDispatch } from "react-redux";
 import { getInfoUser } from "../../redux/slices/userSlice";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../../routes/auth-context";
 
 export default function User() {
-  // const location = useLocation();
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(getInfoUser());
-  // }, [location.search]);
-
-  // const userInfo = useSelector((state) => state.user.value);
+  const user = useAuth();
 
   return (
     <DashBoardSidebar>

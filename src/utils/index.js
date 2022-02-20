@@ -70,8 +70,38 @@ export const tokenInfoCall = async (token) => {
     url: `${url}/oauth/getPayload?token=${token.access_token}`,
     headers: { "content-type": "application/json" },
   });
-  return await tokenInfoApiCall.json();
+  return await tokenInfoApiCall;
 };
+
+export const userServiceCall = async (values, type) => {
+  const id = myLocalStorage.get("session").userId;
+  console.log(myLocalStorage.get("token"));
+
+  switch (type.toUpperCase()) {
+    case "UPDATE":
+      console.log("update");
+      const userServiceApiCall = await apiCall({
+        method: `PUT`,
+        url: `${url}/api/update/${id}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myLocalStorage.get("token")}`,
+        },
+        body: JSON.stringify(values),
+      });
+
+      const response = await userServiceApiCall();
+
+      return response;
+
+      break;
+
+    default:
+      break;
+  }
+};
+
+//Funcion local storage
 
 export const myLocalStorage = (() => {
   return {

@@ -21,11 +21,12 @@ import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { myLocalStorage } from "../../utils/index";
+import { useAuth } from "../../routes/auth-context";
 
 export default function Header({ showSearch, cantidad }) {
   const SearchInput = styled(InputBase)({});
 
-  const user = myLocalStorage.get("user");
+  const userProvider = useAuth();
 
   const [state, setState] = React.useState({
     right: false,
@@ -76,7 +77,7 @@ export default function Header({ showSearch, cantidad }) {
   const navigate = useNavigate();
 
   const navigateRender = () => {
-    if (!!user) {
+    if (!!userProvider) {
       navigate("/profile");
     } else {
       navigate("/login");
@@ -191,7 +192,7 @@ export default function Header({ showSearch, cantidad }) {
                   sx={{ fontSize: ".8em", mr: "1%", ml: "10px" }}
                   onClick={navigateRender}
                 >
-                  {isLoggin(!!user)}
+                  {isLoggin(!!userProvider.user)}
                 </Button>
               </Grid>
             </Grid>

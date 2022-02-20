@@ -21,19 +21,47 @@ export default function RoutesApp() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
+        <Route path="/" element={<Home />} />
         <Route
-          path="/"
+          path="/Dashboard"
           element={
             <RequireAuth>
-              <Home />
+              <Dashboard />
             </RequireAuth>
           }
         />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/shoes" element={<Shoes />} />
-        <Route path="/providers" element={<Providers />} />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <RequireAuth>
+              <Users />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/shoes"
+          element={
+            <RequireAuth>
+              <Shoes />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/providers"
+          element={
+            <RequireAuth>
+              <Providers />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </Router>
   );
@@ -42,7 +70,6 @@ export default function RoutesApp() {
 function RequireAuth({ children }) {
   const auth = useAuth();
   const location = useLocation();
-  console.log(auth);
   if (!auth.user) {
     return (
       <>
