@@ -62,6 +62,8 @@ export default function SignUp() {
         password: "camm",
         address: "calle15679",
         identification: "13333333",
+        questionCode: 4,
+        secureAnswer: "velasques",
       }}
       onSubmit={async (values) => {
         setLoading(true);
