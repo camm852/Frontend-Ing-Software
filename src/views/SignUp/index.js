@@ -76,10 +76,12 @@ export default function SignUp() {
         let response = await signUpCall(body);
 
         if (response.status !== 200) {
+          let payload = await response.json();
+          console.log(payload.message);
           setLoading(false);
           Swal.fire({
             title: "Error",
-            text: "Failed to SignUp",
+            text: `${payload.message}`,
             icon: "error",
           });
         } else {

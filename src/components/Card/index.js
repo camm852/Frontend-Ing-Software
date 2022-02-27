@@ -59,6 +59,7 @@ export default function CardShoe(props) {
         <Button
           variant="contained"
           size="small"
+          sx={{ boxShadow: "none !important", textTransform: "capitalize" }}
           onClick={() => {
             if (findIndexElement(shoesRedux, props.code) === -1)
               distpatch(add({ ...props.shoe, cant: 1 }));

@@ -60,7 +60,6 @@ const AuthProvider = ({ children }) => {
     myLocalStorage.remove("session");
     myLocalStorage.set("session", JSON.stringify(values));
     setUser(myLocalStorage.get("session"));
-    console.log(user);
   };
 
   let value = { user, signIn, signOut, updateUser };

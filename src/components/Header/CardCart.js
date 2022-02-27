@@ -18,9 +18,7 @@ export default function CardCart(props) {
   const dispatch = useDispatch();
 
   const CardStyle = styled(Card)(({ theme }) => ({
-    "&:hover": {
-      boxShadow: "1px 1px 13px 0px rgba(0,0,0,0.75)",
-    },
+    "&:hover": {},
     "&": {
       marginTop: "10px",
       marginBottom: "10px",
@@ -34,9 +32,19 @@ export default function CardCart(props) {
     },
   }));
 
+  const StyledButton = styled(Button)(({ theme }) => ({
+    textTransform: "capitalize",
+    boxShadow: "none !important",
+  }));
+
   return (
     <CardStyle>
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
         <Box>
           <CardContent sx={{ mb: -3 }}>
             <Box sx={{ display: "block" }}>
@@ -55,7 +63,7 @@ export default function CardCart(props) {
             </Box>
           </CardContent>
           <CardActions sx={{ width: "130px" }}>
-            <Button
+            <StyledButton
               variant="contained"
               size="small"
               sx={{ width: "100px" }}
@@ -64,8 +72,8 @@ export default function CardCart(props) {
               }}
             >
               <DeleteIcon />
-            </Button>
-            <Button
+            </StyledButton>
+            <StyledButton
               variant="contained"
               size="small"
               sx={{ width: "100px" }}
@@ -74,8 +82,8 @@ export default function CardCart(props) {
               }}
             >
               +
-            </Button>
-            <Button
+            </StyledButton>
+            <StyledButton
               variant="contained"
               size="small"
               sx={{}}
@@ -84,7 +92,7 @@ export default function CardCart(props) {
               }}
             >
               -
-            </Button>
+            </StyledButton>
           </CardActions>
         </Box>
         <Box>

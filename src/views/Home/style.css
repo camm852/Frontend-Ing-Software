@@ -1,0 +1,8 @@
+@media (max-width: 728px) {
+  .buttonContainer {
+    flex-wrap: wrap;
+  }
+  .buttonChild {
+    margin-bottom: 10px;
+  }
+}

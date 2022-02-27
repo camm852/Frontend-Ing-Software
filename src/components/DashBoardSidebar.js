@@ -25,7 +25,7 @@ const itemsAdmin = [
   {
     href: "/",
     icon: <HouseIcon fontSize="small" />,
-    title: "Main",
+    title: "Home",
   },
   {
     href: "/profile",
@@ -58,7 +58,7 @@ const itemsUser = [
   {
     href: "/",
     icon: <HouseIcon fontSize="small" />,
-    title: "Main",
+    title: "Home",
   },
   {
     href: "/profile",

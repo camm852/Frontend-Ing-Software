@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import lodash from "lodash";
 
 export const cartSlice = createSlice({
   name: "cart",

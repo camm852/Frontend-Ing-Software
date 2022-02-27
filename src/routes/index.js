@@ -23,7 +23,7 @@ export default function RoutesApp() {
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/" element={<Home />} />
         <Route
-          path="/Dashboard"
+          path="/dashboard"
           element={
             <RequireAuth>
               <Dashboard />
@@ -89,7 +89,7 @@ function RequireAuth({ children }) {
 
 function RequireAdmin({ children }) {
   const auth = useAuth();
-  console.log(auth.user.roleCode);
+  console.log(JSON.parse(auth.user));
   const location = useLocation();
   if (auth.user.roleCode !== 2) {
     return (
