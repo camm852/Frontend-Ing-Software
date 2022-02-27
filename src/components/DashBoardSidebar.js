@@ -13,7 +13,6 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { NavItem } from "./NavItem";
 import profileLogo from "../assets/profile.png";
-import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import HouseIcon from "@mui/icons-material/House";
 import { myLocalStorage } from "../utils";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -34,7 +33,7 @@ const itemsAdmin = [
     title: "Profile",
   },
   {
-    href: "/account",
+    href: "/dashboard",
     icon: <AccountCircleIcon fontSize="small" />,
     title: "Dashboard",
   },
@@ -49,9 +48,9 @@ const itemsAdmin = [
     title: "Shoes",
   },
   {
-    href: "/providers",
+    href: "/suppliers",
     icon: <AccountCircleIcon fontSize="small" />,
-    title: "Providers",
+    title: "Suppliers",
   },
 ];
 
@@ -248,7 +247,7 @@ function DashBoardSidebar(props) {
               widht: "100%",
               display: "flex",
               justifyContent: "flex-end",
-              marginTop: "180px",
+              marginTop: { xl: "180px" },
             }}
           >
             <Button

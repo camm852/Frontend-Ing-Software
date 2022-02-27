@@ -12,8 +12,6 @@ export const signUpCall = async (user) => {
       roleCode: 1,
     };
 
-    console.log(params);
-
     console.log(`${url}/api/user/save`);
 
     const signUpApiCall = await apiCall({
@@ -70,19 +68,19 @@ export const tokenInfoCall = async (token) => {
     url: `${url}/oauth/getPayload?token=${token.access_token}`,
     headers: { "content-type": "application/json" },
   });
-  return await tokenInfoApiCall;
+  return tokenInfoApiCall;
 };
 
-export const userServiceCall = async (values, type) => {
+//Funcion peticion al servicio usuario
+
+export const userServiceCall = async ({ values, type, service }) => {
   const id = myLocalStorage.get("session").userId;
-  console.log(myLocalStorage.get("token"));
 
   switch (type.toUpperCase()) {
-    case "UPDATE":
-      console.log("update");
+    case "UPDATE": {
       const userServiceApiCall = await apiCall({
         method: `PUT`,
-        url: `${url}/api/update/${id}`,
+        url: `${url}/api/${service}/update/${id}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${myLocalStorage.get("token")}`,
@@ -90,15 +88,82 @@ export const userServiceCall = async (values, type) => {
         body: JSON.stringify(values),
       });
 
-      const response = await userServiceApiCall();
+      return userServiceApiCall;
+    }
 
-      return response;
+    case "LIST": {
+      const userServiceApiCall = await apiCall({
+        method: `GET`,
+        url: `${url}/api/${service}/list`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myLocalStorage.get("token")}`,
+        },
+      });
+      return userServiceApiCall;
+    }
 
-      break;
+    case "ADD": {
+      const userServiceApiCall = await apiCall({
+        method: `POST`,
+        url: `${url}/api/${service}/save`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myLocalStorage.get("token")}`,
+        },
+      });
+      return userServiceApiCall;
+    }
 
     default:
       break;
   }
+};
+
+export const supplierServiceCall = async (values, type, service) => {
+  const _Type = type.toUpperCase();
+
+  switch (_Type) {
+    case "ADD": {
+      const supplierServiceApiCall = await apiCall({
+        method: "POST",
+        url: `${url}/api/${service}/save`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myLocalStorage.get("token")}`,
+        },
+      });
+      break;
+    }
+    case "LIST": {
+      const supplierServiceApiCall = await apiCall({
+        method: "GET",
+        url: `${url}/api/${service}/list`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myLocalStorage.get("token")}`,
+        },
+      });
+      break;
+    }
+
+    default:
+      break;
+  }
+};
+
+export const findIndexElement = (array, item) => {
+  let count = -1;
+  array.map((element, i) => {
+    if (Object.values(element).join("").includes(item)) {
+      count = i;
+    }
+  });
+
+  return count;
+
+  // if (!find) return -1;
+  // else return 1;
 };
 
 //Funcion local storage

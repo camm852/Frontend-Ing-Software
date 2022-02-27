@@ -1,9 +1,12 @@
+import React, { useEffect, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { signUpCall } from "../../utils";
 import Header from "../../components/Header/Header";
-import React, { useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import Swal from "sweetalert2";
+import { useAuth } from "../../routes/auth-context";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   createTheme,
   ThemeProvider,
@@ -19,8 +22,6 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
-import Swal from "sweetalert2";
-import { useAuth } from "../../routes/auth-context";
 
 const theme = createTheme({
   typography: {
@@ -31,11 +32,22 @@ const theme = createTheme({
 });
 
 export default function SignUp() {
+  const [captcha, setCaptcha] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
-  const userProvide = useAuth();
   const location = useLocation();
 
-  const [loading, setLoading] = useState(false);
+  const userProvide = useAuth();
+
+  const handleOnChange = (value) => {
+    let chunk = value;
+    chunk.length !== 0 ? setCaptcha(false) : setCaptcha(true);
+  };
+
+  useEffect(() => {
+    document.title = "Sign Up";
+  }, []);
 
   return userProvide.user ? (
     <Navigate to="/" state={{ from: location }} replace />
@@ -102,7 +114,7 @@ export default function SignUp() {
             <CssBaseline />
             <Box
               sx={{
-                marginTop: 3,
+                marginTop: 1.5,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -218,8 +230,15 @@ export default function SignUp() {
                       helperText={touched.password && errors.password}
                     />
                   </Grid>
+                  <Grid item xs={12}>
+                    <ReCAPTCHA
+                      sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                      onChange={handleOnChange}
+                    />
+                  </Grid>
                 </Grid>
                 <LoadingButton
+                  disabled={captcha}
                   loading={loading}
                   fullWidth
                   variant="contained"

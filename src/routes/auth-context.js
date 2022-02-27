@@ -14,20 +14,24 @@ const AuthProvider = ({ children }) => {
     let response = await signInCall(values);
     if (response.status !== 200) {
       setUser(null);
-      return false;
+      Swal.fire({
+        title: "Error",
+        text: "Failed autentication",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2500,
+      });
     } else {
       const tokenResponse = response;
       let tokenInfo = {};
       if (response.status !== 200) {
         setUser(null);
-        return false;
       } else {
         tokenInfo = await tokenResponse.json();
         myLocalStorage.set("token", JSON.stringify(tokenInfo.access_token));
         const userResponse = await tokenInfoCall(tokenInfo);
         if (userResponse.status !== 200) {
           setUser(null);
-          return false;
         } else {
           let userInfo = await userResponse.json();
           Swal.fire({
@@ -41,8 +45,6 @@ const AuthProvider = ({ children }) => {
             myLocalStorage.set("session", JSON.stringify(userInfo));
             setUser(JSON.stringify(userInfo));
           }, 3000);
-
-          return true;
         }
       }
     }
@@ -54,11 +56,14 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const updateUser = () => {
+  const updateUser = ({ values }) => {
+    myLocalStorage.remove("session");
+    myLocalStorage.set("session", JSON.stringify(values));
     setUser(myLocalStorage.get("session"));
+    console.log(user);
   };
 
-  let value = { user, signIn, signOut };
+  let value = { user, signIn, signOut, updateUser };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

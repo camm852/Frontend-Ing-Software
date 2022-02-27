@@ -12,7 +12,7 @@ import Dashboard from "../views/Dashobard";
 import Profile from "../views/Profile";
 import Users from "../views/Users/index";
 import Shoes from "../views/Shoes";
-import Providers from "../views/Providers";
+import Suppliers from "../views/Suppliers";
 import { useAuth } from "./auth-context";
 
 export default function RoutesApp() {
@@ -42,7 +42,9 @@ export default function RoutesApp() {
           path="/users"
           element={
             <RequireAuth>
-              <Users />
+              <RequireAdmin>
+                <Users />
+              </RequireAdmin>
             </RequireAuth>
           }
         />
@@ -50,15 +52,19 @@ export default function RoutesApp() {
           path="/shoes"
           element={
             <RequireAuth>
-              <Shoes />
+              <RequireAdmin>
+                <Shoes />
+              </RequireAdmin>
             </RequireAuth>
           }
         />
         <Route
-          path="/providers"
+          path="/suppliers"
           element={
             <RequireAuth>
-              <Providers />
+              <RequireAdmin>
+                <Suppliers />
+              </RequireAdmin>
             </RequireAuth>
           }
         />
@@ -78,5 +84,19 @@ function RequireAuth({ children }) {
     );
   }
 
+  return children;
+}
+
+function RequireAdmin({ children }) {
+  const auth = useAuth();
+  console.log(auth.user.roleCode);
+  const location = useLocation();
+  if (auth.user.roleCode !== 2) {
+    return (
+      <>
+        <Navigate to="/profile" state={{ from: location }} replace />
+      </>
+    );
+  }
   return children;
 }

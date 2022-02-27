@@ -3,3 +3,9 @@
     font-size: 15px;
   }
 }
+
+@media (min-width: 600px) and (max-width: 750px) {
+  .cartIcon {
+    margin-right: -20px !important;
+  }
+}

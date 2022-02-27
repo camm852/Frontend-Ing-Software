@@ -46,6 +46,10 @@ export default function Login() {
       .required("Password is required"),
   });
 
+  useEffect(() => {
+    document.title = "Sign In";
+  }, []);
+
   return userProvider.user ? (
     <Navigate to="/profile" state={{ from: location }} replace />
   ) : (
@@ -57,7 +61,10 @@ export default function Login() {
       }}
       onSubmit={async (values) => {
         setLoading(true);
-        if (!userProvider.signIn(values)) setLoading(false);
+        userProvider.signIn(values);
+        setTimeout(() => {
+          if (!userProvider.user) setLoading(false);
+        }, 1000);
       }}
     >
       {({
@@ -84,11 +91,7 @@ export default function Login() {
               <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
                 <LockOutlinedIcon />
               </Avatar>
-              <Typography
-                component="h1"
-                variant="h4"
-                sx={{ fontFamily: "Monserrat" }}
-              >
+              <Typography component="h1" variant="h4">
                 Sign in
               </Typography>
               <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>

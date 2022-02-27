@@ -14,19 +14,27 @@ import { useAuth } from "../../routes/auth-context";
 
 export const AccountProfileDetails = (props) => {
   const userProvider = myLocalStorage.get("session");
+  const userAuth = useAuth();
 
   const [values, setValues] = useState({
-    firstName: userProvider.userName,
+    userId: userProvider.userId,
+    userName: userProvider.userName,
     email: userProvider.email,
     phone: userProvider.phone,
     address: userProvider.address,
     password: userProvider.password,
+    roleCode: userProvider.roleCode,
   });
 
-  const updateUser = () => {
-    let response = userServiceCall(values, "update");
-    if (response.status !== 2000) {
+  const updateUser = async () => {
+    let response = await userServiceCall({
+      values: values,
+      type: "update",
+      service: "user",
+    });
+    if (response.status !== 200) {
     } else {
+      userAuth.updateUser({ values });
     }
   };
 
@@ -48,10 +56,10 @@ export const AccountProfileDetails = (props) => {
               <TextField
                 fullWidth
                 label="Name"
-                name="firstName"
+                name="userName"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.userName}
                 variant="outlined"
               />
             </Grid>
@@ -62,6 +70,7 @@ export const AccountProfileDetails = (props) => {
                 name="email"
                 onChange={handleChange}
                 required
+                inputProps={{ readOnly: true }}
                 value={values.email}
                 variant="outlined"
               />

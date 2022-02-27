@@ -11,6 +11,10 @@ import { useAuth } from "../../routes/auth-context";
 export default function User() {
   const user = useAuth();
 
+  useEffect(() => {
+    document.title = "Profile";
+  }, []);
+
   return (
     <DashBoardSidebar>
       <Box

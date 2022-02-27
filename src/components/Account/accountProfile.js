@@ -19,7 +19,7 @@ export const AccountProfile = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const userProvider = useAuth();
+  const userProvider = myLocalStorage.get("session");
 
   return (
     <Card {...props}>
@@ -39,7 +39,7 @@ export const AccountProfile = (props) => {
             }}
           />
           <Typography color="textPrimary" gutterBottom variant="h5">
-            {userProvider.user.userName}
+            {userProvider.userName}
           </Typography>
         </Box>
       </CardContent>

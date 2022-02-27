@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -8,10 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { add } from "../../redux/slices/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { findIndexElement } from "../../utils";
 
 const CardStyle = styled(Card)(({ theme }) => ({
   "&:hover": {
-    boxShadow: "1px 1px 13px 0px rgba(0,0,0,0.75)",
+    // boxShadow: "1px 1px 13px 0px rgba(0,0,0,0.75)",
   },
   "&": {
     cursor: "pointer",
@@ -27,28 +31,44 @@ const CardStyle = styled(Card)(({ theme }) => ({
   },
 }));
 
-export default function CardShoe() {
+export default function CardShoe(props) {
+  const distpatch = useDispatch();
+  const shoesRedux = useSelector((state) => state.cart.value);
+  // const handleClick = (value) => {
+  //   distpatch(add(value));
+  // };
+
   return (
-    <CardStyle>
+    <CardStyle sx={{ padding: 1.5 }}>
       <CardMedia
         component="img"
-        height="100"
-        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvhku_lEouF4DcjthKhLHiwO9jSI_VLr9qVYOELiCETPlcaPV1Ac_nb4P6SGvIJ9LReY0&usqp=CAU"
-        alt="green iguana"
+        height="140"
+        image={props.image}
+        alt={props.alt}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          Shoe
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {props.description}
         </Typography>
+        <Typography variant="body2" color="text.secondary"></Typography>
       </CardContent>
       <CardActions>
-        <Button variant="contained" size="small">
-          Add to cart
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => {
+            if (findIndexElement(shoesRedux, props.code) === -1)
+              distpatch(add({ ...props.shoe, cant: 1 }));
+          }}
+        >
+          {findIndexElement(shoesRedux, props.code) === -1
+            ? "Add to cart"
+            : "Is added"}
         </Button>
+        <Box sx={{ ml: "20px" }}>{`$ ${props.price}`}</Box>
       </CardActions>
     </CardStyle>
   );

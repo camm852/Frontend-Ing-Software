@@ -1,40 +1,39 @@
-import React from "react";
-import { Formik } from "formik";
-import { signUpCall } from "../../utils";
-import SearchIcon from "@mui/icons-material/Search";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Swal from "sweetalert2";
-import "../sweetStyle.css";
 import {
+  Backdrop,
   Box,
   Button,
-  Backdrop,
-  TextField,
-  Modal,
-  Fade,
-  Typography,
-  Grid,
   Container,
   CssBaseline,
+  Fade,
+  Grid,
+  Modal,
+  TextField,
+  Typography,
 } from "@mui/material";
+import "../sweetStyle.css";
+import React from "react";
+import { LoadingButton } from "@mui/lab";
+import Swal from "sweetalert2";
+import { Formik } from "formik";
 
-const style = {
-  position: "absolute",
-  borderRadius: "30px",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
-
-export const UserListToolbar = () => {
+export const SupplierListToolbar = () => {
   const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const style = {
+    position: "absolute",
+    borderRadius: "30px",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
 
   return (
     <Box sx={{ mb: 2 }}>
@@ -55,16 +54,16 @@ export const UserListToolbar = () => {
           }}
           variant="h4"
         >
-          Users
+          Suppliers
         </Typography>
         <Box sx={{ m: 1 }}>
           <Button
             color="primary"
             variant="contained"
-            onClick={handleOpen}
             sx={{ fontWeight: "600" }}
+            onClick={handleOpen}
           >
-            Add User
+            Add Supplier
           </Button>
           <Modal
             aria-labelledby="transition-modal-title"
@@ -81,54 +80,53 @@ export const UserListToolbar = () => {
               <Box sx={style}>
                 <Formik
                   initialValues={{
+                    nit: "",
                     name: "",
-                    lastName: "",
-                    email: "",
                     telephone: "",
-                    userId: "",
-                    password: "",
                     address: "",
-                    identification: "",
+                    city: "",
                   }}
                   onSubmit={async (values) => {
                     setLoading(true);
                     const body = {
-                      userId: values.identification,
-                      userName: `${values.name} ${values.lastName}`,
-                      email: values.email,
-                      password: values.password,
-                      address: values.address,
-                      roleCode: 1,
-                      phone: values.telephone,
+                      // userId: values.identification,
+                      // userName: `${values.name} ${values.lastName}`,
+                      // email: values.email,
+                      // password: values.password,
+                      // address: values.address,
+                      // roleCode: 1,
+                      // phone: values.telephone,
                     };
-                    let response = await signUpCall(body);
+                    // let response = await signUpCall(body);
 
-                    if (response.status !== 200) {
-                      setLoading(false);
+                    // if (response.status !== 200) {
+                    //   setLoading(false);
 
-                      Swal.fire({
-                        customClass: {},
-                        title: "Error",
-                        text: "Failed to Add User",
-                        icon: "error",
-                      });
-                    } else {
-                      setLoading(false);
+                    //   Swal.fire({
+                    //     customClass: {
+                    //       container: "my-swal",
+                    //     },
+                    //     title: "Error",
+                    //     text: "Failed to Add User",
+                    //     icon: "error",
+                    //   });
+                    // } else {
+                    //   setLoading(false);
 
-                      Swal.fire({
-                        customClass: {
-                          container: "my-swal",
-                        },
-                        title: "God job",
-                        text: "Correct Add User",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500,
-                      });
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 1500);
-                    }
+                    //   Swal.fire({
+                    //     customClass: {
+                    //       container: "my-swal",
+                    //     },
+                    //     title: "God job",
+                    //     text: "Correct Add User",
+                    //     icon: "success",
+                    //     showConfirmButton: false,
+                    //     timer: 1500,
+                    //   });
+                    //   setTimeout(() => {
+                    //     window.location.reload();
+                    //   }, 1500);
+                    // }
                   }}
                 >
                   {({
@@ -157,7 +155,7 @@ export const UserListToolbar = () => {
                           variant="h5"
                           sx={{ fontWeight: "600", mb: "10px" }}
                         >
-                          Add User
+                          Add Supplier
                         </Typography>
                         <Box
                           component="form"
@@ -168,12 +166,26 @@ export const UserListToolbar = () => {
                             <Grid item xs={12} sm={12}>
                               <TextField
                                 autoComplete="off"
-                                name="name"
+                                name="nit"
                                 required
                                 fullWidth
                                 value={values.name}
-                                id="firstName"
-                                label="First Name"
+                                id="nit"
+                                label="Nit"
+                                onChange={handleChange}
+                                error={touched.nit && Boolean(errors.nit)}
+                                helperText={touched.nit && errors.nit}
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
+                              <TextField
+                                required
+                                fullWidth
+                                id="name"
+                                label="Name"
+                                name="name"
+                                autoComplete="off"
+                                value={values.name}
                                 onChange={handleChange}
                                 error={touched.name && Boolean(errors.name)}
                                 helperText={touched.name && errors.name}
@@ -197,26 +209,6 @@ export const UserListToolbar = () => {
                                 }
                               />
                             </Grid>
-                            <Grid item xs={12} sm={12}>
-                              <TextField
-                                required
-                                fullWidth
-                                id="identification"
-                                label="Identification"
-                                name="identification"
-                                autoComplete="off"
-                                value={values.identification}
-                                onChange={handleChange}
-                                error={
-                                  touched.identification &&
-                                  Boolean(errors.identification)
-                                }
-                                helperText={
-                                  touched.identification &&
-                                  errors.identification
-                                }
-                              />
-                            </Grid>
                             <Grid item xs={12}>
                               <TextField
                                 required
@@ -233,35 +225,20 @@ export const UserListToolbar = () => {
                                 helperText={touched.address && errors.address}
                               />
                             </Grid>
+
                             <Grid item xs={12}>
                               <TextField
                                 required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="off"
-                                value={values.email}
-                                onChange={handleChange}
-                                error={touched.email && Boolean(errors.email)}
-                                helperText={touched.email && errors.email}
-                              />
-                            </Grid>
-                            <Grid item xs={12}>
-                              <TextField
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
+                                name="city"
+                                label="City"
+                                type="city"
+                                id="city"
                                 autoComplete="new-password"
-                                value={values.password}
+                                value={values.city}
                                 onChange={handleChange}
-                                error={
-                                  touched.password && Boolean(errors.password)
-                                }
-                                helperText={touched.password && errors.password}
+                                error={touched.city && Boolean(errors.city)}
+                                helperText={touched.city && errors.city}
                               />
                             </Grid>
                           </Grid>
@@ -272,7 +249,7 @@ export const UserListToolbar = () => {
                             type="submit"
                             sx={{ mt: 3, mb: 2, fontWeight: "600" }}
                           >
-                            Add User
+                            Add Supplier
                           </LoadingButton>
                         </Box>
                       </Box>

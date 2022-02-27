@@ -1,8 +1,9 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
-import { AccountProfile } from "../../components/Account/accountProfile";
-import { AccountProfileDetails } from "../../components/Account/accountProfileDetails";
+import { useEffect } from "react";
 import DashBoardSidebar from "../../components/DashBoardSidebar";
 
 export default function Dashboard() {
+  useEffect(() => {
+    document.title = "Dashboard";
+  }, []);
   return <DashBoardSidebar></DashBoardSidebar>;
 }
