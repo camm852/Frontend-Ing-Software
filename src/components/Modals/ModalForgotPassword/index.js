@@ -37,6 +37,7 @@ function ModalForgotpassword() {
 
   const handleCloseModalForgotpassword = () => {
     setConfirmEmail(false);
+    setAnswerConfirm(false);
     dispatch(close());
   };
 
@@ -115,7 +116,7 @@ function ModalForgotpassword() {
         customClass: {
           container: "my-swal",
         },
-        title: "!Please!",
+        title: "¡Please!",
         text: `Write a password`,
         icon: "error",
       });
@@ -148,10 +149,11 @@ function ModalForgotpassword() {
       BackdropProps={{
         timeout: 500,
       }}
+      sx={{ fontWeight: "500" }}
     >
       <Fade in={helpState}>
         <Box sx={modalStyle}>
-          <Box component="form" onSubmit={handleSubmitEmail}>
+          <Box>
             <Box>
               <Typography
                 component="h2"
@@ -189,15 +191,11 @@ function ModalForgotpassword() {
             </Box>
           </Box>
           {confirmEmail && (
-            <Box
-              component="form"
-              sx={{ mt: "30px" }}
-              onSubmit={handleSubmitAnswer}
-            >
+            <Box sx={{ mt: "30px" }}>
               <Box>
                 <Typography
                   component="h2"
-                  variant="h6"
+                  variant="h5"
                   sx={{ textAlign: "center" }}
                 >
                   What is the name of your first pet?
@@ -242,7 +240,7 @@ function ModalForgotpassword() {
               <Box>
                 <Typography
                   component="h2"
-                  variant="h6"
+                  variant="h5"
                   sx={{ textAlign: "center" }}
                 >
                   Write the new password
