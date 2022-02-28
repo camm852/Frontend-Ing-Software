@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { myLocalStorage, userServiceCall } from "../../utils";
+import { useAuth } from "../../routes/auth-context";
 import {
   Box,
   Button,
@@ -9,8 +11,6 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import { myLocalStorage, userServiceCall } from "../../utils";
-import { useAuth } from "../../routes/auth-context";
 
 export const AccountProfileDetails = (props) => {
   const userProvider = myLocalStorage.get("session");

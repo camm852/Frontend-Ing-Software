@@ -1,76 +1,24 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { NavItem } from "./NavItem";
-import profileLogo from "../assets/profile.png";
-import HouseIcon from "@mui/icons-material/House";
+import profileLogo from "../assets/images/profile.png";
 import { myLocalStorage } from "../utils";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { Button } from "@mui/material";
+import { NavItem } from "./NavItem";
 import { useAuth } from "../routes/auth-context";
+import { pathsAdmin, pathsUser } from "../assets/PathsJson";
+import {
+  Button,
+  Toolbar,
+  List,
+  AppBar,
+  Box,
+  Drawer,
+  CssBaseline,
+} from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const drawerWidth = 260;
-
-const itemsAdmin = [
-  {
-    href: "/",
-    icon: <HouseIcon fontSize="small" />,
-    title: "Home",
-  },
-  {
-    href: "/profile",
-    icon: <AccountCircleIcon fontSize="small" />,
-    title: "Profile",
-  },
-  {
-    href: "/dashboard",
-    icon: <AccountCircleIcon fontSize="small" />,
-    title: "Dashboard",
-  },
-  {
-    href: "/users",
-    icon: <GroupAddIcon fontSize="small" />,
-    title: "Users",
-  },
-  {
-    href: "/shoes",
-    icon: <Inventory2Icon fontSize="small" />,
-    title: "Shoes",
-  },
-  {
-    href: "/suppliers",
-    icon: <AccountCircleIcon fontSize="small" />,
-    title: "Suppliers",
-  },
-];
-
-const itemsUser = [
-  {
-    href: "/",
-    icon: <HouseIcon fontSize="small" />,
-    title: "Home",
-  },
-  {
-    href: "/profile",
-    icon: <AccountCircleIcon fontSize="small" />,
-    title: "Profile",
-  },
-  {
-    href: "/dashboard",
-    icon: <AccountCircleIcon fontSize="small" />,
-    title: "Dashboard",
-  },
-];
 
 function DashBoardSidebar(props) {
   const { children } = props;
@@ -93,7 +41,7 @@ function DashBoardSidebar(props) {
       <Toolbar />
       <List>
         {(userInfo.roleCode === 1 &&
-          itemsUser.map((item) => (
+          pathsUser.map((item) => (
             <NavItem
               key={item.title}
               icon={item.icon}
@@ -102,7 +50,7 @@ function DashBoardSidebar(props) {
             />
           ))) ||
           (userInfo.roleCode === 2 &&
-            itemsAdmin.map((item) => (
+            pathsAdmin.map((item) => (
               <NavItem
                 key={item.title}
                 icon={item.icon}

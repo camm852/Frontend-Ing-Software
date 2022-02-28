@@ -35,7 +35,7 @@ const AuthProvider = ({ children }) => {
         } else {
           let userInfo = await userResponse.json();
           Swal.fire({
-            title: "God job",
+            title: "Good job",
             text: "Correct autentication",
             icon: "success",
             showConfirmButton: false,

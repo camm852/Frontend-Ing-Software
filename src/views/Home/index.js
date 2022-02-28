@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import CardShoe from "../../components/Card";
-import Header from "../../components/Header/Header";
-import { arrayShoe } from "../../assets/ShoesJson/Shoes";
 import Carousel from "react-elastic-carousel";
+import CardShoe from "../../components/Card/CardShoe/index";
+import Header from "../../components/Header/index";
+import { arrayShoe } from "../../assets/ShoesJson/index";
 import brahma from "../../assets/images/bannerWebBrahma.jpg";
 import precios from "../../assets/images/bannerWebPrecios.jpg";
 import ultimos from "../../assets/images/bannerWebUltimos.jpg";
 import creditCart from "../../assets/images/creditCard.svg";
 import box from "../../assets/images/box.svg";
 import shield from "../../assets/images/shield.svg";
-import "./style.css";
-
+import ShowAllShoes from "./ShowAllShoes/index";
+import Footer from "../../components/Footer/FooterHome/index";
 import {
   Box,
   Button,
@@ -19,17 +19,9 @@ import {
   Grid,
   ThemeProvider,
   Typography,
-  styled,
-  Modal,
-  Fade,
-  Backdrop,
 } from "@mui/material";
-import MapIcon from "@mui/icons-material/Map";
-import HelpIcon from "@mui/icons-material/Help";
 import HouseIcon from "@mui/icons-material/House";
-import { textAlign } from "@mui/system";
-import { Link, useNavigate } from "react-router-dom";
-import ShowAllShoes from "./ShowAllShoes/ShowAllShoes";
+import "./style.css";
 
 const items = [brahma, precios, ultimos];
 
@@ -44,217 +36,10 @@ export default function Home() {
 
   const carouselImagesRef = useRef(null);
 
-  //Navigation
-
-  const navigate = useNavigate();
-
-  //Object
-
-  const modalStyle = {
-    position: "absolute",
-    borderRadius: "30px",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 680,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 4,
-  };
-
-  const pathsAdmin = [
-    {
-      href: "/",
-      title: "Home",
-      description: "Main page",
-    },
-    {
-      href: "/users",
-      title: "Users",
-      description: "Users Management",
-    },
-    {
-      href: "/shoes",
-      title: "Shoes",
-      description: "Shoes Management",
-    },
-    {
-      href: "/profile",
-      title: "Profile",
-      description: "User profile",
-    },
-    {
-      href: "/suppliers",
-      title: "Suppliers",
-      description: "Suppliers Management",
-    },
-    {
-      href: "/dashboard",
-      title: "Dashboard",
-      description: "Account Information",
-    },
-  ];
-
-  const pathsUser = [
-    {
-      href: "/",
-      title: "Home",
-      description: "Main page",
-    },
-    {
-      href: "/profile",
-      title: "Profile",
-      description: "User profile",
-    },
-    {
-      href: "/dashboard",
-      title: "Dashboard",
-      description: "Account Information",
-    },
-  ];
-
   //Funcitons
 
-  const handleOpenModalMap = () => setMapSiteState(true);
-  const handleCloseModalMap = () => setMapSiteState(false);
   const handleShowAllShoes = () => setShowAll(true);
   const handleComeBack = () => setShowAll(false);
-
-  const ModalMapSite = () => {
-    return (
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={mapSiteState}
-        onClose={handleCloseModalMap}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={mapSiteState}>
-          <Box sx={modalStyle}>
-            <Grid container columnSpacing={2}>
-              <Grid item xs={6}>
-                <Typography component="h1" variant="h6">
-                  Routes for Admin
-                </Typography>
-                {pathsAdmin.map((path) => {
-                  return (
-                    <Box>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: "primary.main",
-                          textTransform: "capitalize",
-                          boxShadow: "none !important",
-                          mt: 1,
-                        }}
-                        // onClick={navigate("/dashboard")}
-                      >
-                        <Link
-                          to={path.href}
-                          style={{
-                            textDecoration: "none",
-                            color: "#fff",
-                            textTransform: "capitalize",
-                          }}
-                        >
-                          {path.title}
-                        </Link>
-                      </Button>
-                      <Button
-                        sx={{
-                          mt: 1,
-                          color: "#000",
-                          cursor: "default",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        {path.description}
-                      </Button>
-                    </Box>
-                  );
-                })}
-              </Grid>
-              <Divider
-                orientation="vertical"
-                flexItem
-                variant="middle"
-              ></Divider>
-
-              <Grid item xs={5.5}>
-                <Typography component="h1" variant="h6">
-                  Routes for User
-                </Typography>
-                {pathsUser.map((path) => {
-                  return (
-                    <Box>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: "primary.main",
-                          textTransform: "capitalize",
-                          boxShadow: "none !important",
-                          mt: 1,
-                        }}
-                        // onClick={navigate("/dashboard")}
-                      >
-                        <Link
-                          to={path.href}
-                          style={{
-                            textDecoration: "none",
-                            color: "#fff",
-                            textTransform: "capitalize",
-                          }}
-                        >
-                          {path.title}
-                        </Link>
-                      </Button>
-                      <Button
-                        sx={{
-                          mt: 1,
-                          color: "#000",
-                          cursor: "default",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        {path.description}
-                      </Button>
-                    </Box>
-                  );
-                })}
-              </Grid>
-            </Grid>
-          </Box>
-        </Fade>
-      </Modal>
-    );
-  };
-
-  const handleOpenModalHelp = () => setHelpState(true);
-  const handleCloseModalHelp = () => setHelpState(false);
-
-  const ModalHelp = () => {
-    return (
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={helpState}
-        onClose={handleCloseModalHelp}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={helpState}>
-          <Box sx={modalStyle}>Map site</Box>
-        </Fade>
-      </Modal>
-    );
-  };
 
   //Theme
 
@@ -266,17 +51,7 @@ export default function Home() {
     },
   });
 
-  //StyledComponets
-
-  const StyledButton = styled(Button)(({ theme }) => ({
-    color: "#fff",
-    backgroundColor: "#000",
-    textTransform: "capitalize",
-    boxShadow: "none !important",
-    "&:hover": {
-      backgroundColor: "#424242",
-    },
-  }));
+  //Object
 
   const breakpointsCarousel = [
     { width: theme.breakpoints.values.xs, itemsToShow: 2 },
@@ -609,103 +384,7 @@ export default function Home() {
           </Box>
 
           {/* Footer */}
-
-          <Box
-            sx={{
-              mt: "50px",
-              minWidth: "600px",
-              height: "120px !important",
-              backgroundColor: "#F4F4F4",
-            }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={4} sm={4}>
-                <Box sx={{ textAlign: "center", mt: "20px" }}>
-                  <Typography
-                    component="h1"
-                    variant="h4"
-                    sx={{ fontSize: "1.8em", color: "#2A2A2A" }}
-                  >
-                    Zhopy
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={4} sm={4}>
-                <Box sx={{ mt: "19px", textAlign: "center" }}>
-                  <Typography
-                    component="h1"
-                    variant="h4"
-                    sx={{ fontSize: "1.4em", color: "#2A2A2A" }}
-                  >
-                    ©Copyright
-                  </Typography>
-                </Box>
-                <Typography
-                  component="body"
-                  variant="body1"
-                  sx={{
-                    fontSize: "12px",
-                    mt: "6px",
-                    textAlign: "center",
-                    color: "#787878",
-                  }}
-                >
-                  Carlos Muñoz - Kevin Martinez - Jorge Abella - Daniel Alferez
-                  - Alex el capo, Unillanos - Ingeniera de Software, 2021-2
-                </Typography>
-              </Grid>
-              <Grid item xs={4} sm={4}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    mt: "20px",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                  className="buttonContainer"
-                >
-                  <Box className="buttonChild">
-                    <Typography
-                      component="h1"
-                      variant="h4"
-                      sx={{ fontSize: "1.8em", color: "#2A2A2A" }}
-                    >
-                      <StyledButton
-                        variant="contained"
-                        startIcon={<MapIcon />}
-                        sx={{
-                          backgroundColor: "black",
-                        }}
-                        onClick={handleOpenModalMap}
-                      >
-                        Map Site
-                      </StyledButton>
-                      <ModalMapSite />
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      component="h1"
-                      variant="h4"
-                      sx={{ fontSize: "1.8em", color: "#2A2A2A" }}
-                    >
-                      <StyledButton
-                        variant="contained"
-                        startIcon={<HelpIcon />}
-                        sx={{ ml: "20px" }}
-                        onClick={handleOpenModalHelp}
-                      >
-                        Help
-                      </StyledButton>
-                      <ModalHelp />
-                    </Typography>
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
+          <Footer />
         </Box>
       )}
     </ThemeProvider>

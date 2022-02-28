@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import usePagination from "../../utils/Pagination";
 import {
   Box,
   Card,
@@ -15,9 +16,7 @@ import {
   SvgIcon,
   TextField,
 } from "@mui/material";
-import { supplierServiceCall } from "../../utils";
 import SearchIcon from "@mui/icons-material/Search";
-import usePagination from "../../utils/Pagination";
 
 export const SupplierListResults = () => {
   const [suppliers, setSuppliers] = useState([{}]);

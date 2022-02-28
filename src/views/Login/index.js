@@ -1,9 +1,14 @@
-import Header from "../../components/Header/Header";
+import { useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { useAuth } from "../../routes/auth-context";
+import Header from "../../components/Header/index";
+import { open } from "../../redux/slices/modalForgotPass";
+import ModalForgotpassword from "../../components/Modals/ModalForgotPassword";
 import {
   Avatar,
-  Button,
   CssBaseline,
   TextField,
   Link,
@@ -15,13 +20,6 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useEffect, useState } from "react";
-import { myLocalStorage, signInCall, tokenInfoCall } from "../../utils";
-import { login } from "../../redux/slices/userSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import { useAuth } from "../../routes/auth-context";
 
 const theme = createTheme({
   typography: {
@@ -34,10 +32,12 @@ const theme = createTheme({
 export default function Login() {
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
   const userProvider = useAuth();
+
+  const dispatch = useDispatch();
+
+  const handleForgotPass = () => dispatch(open());
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email format").required("Required"),
@@ -131,13 +131,23 @@ export default function Login() {
                   Sign In
                 </LoadingButton>
                 <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
+                  <Grid item xs sx={{}}>
+                    <Link
+                      href="#"
+                      variant="body2"
+                      style={{ textDecoration: "none" }}
+                      onClick={handleForgotPass}
+                    >
                       Forgot password?
                     </Link>
+                    <ModalForgotpassword />
                   </Grid>
                   <Grid item>
-                    <Link href="/signUp" variant="body2">
+                    <Link
+                      href="/signUp"
+                      variant="body2"
+                      style={{ textDecoration: "none" }}
+                    >
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>

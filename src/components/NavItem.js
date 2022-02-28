@@ -1,8 +1,7 @@
 import React from "react";
-
 import PropTypes from "prop-types";
-import { Box, Button, ListItem } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Box, Button, ListItem } from "@mui/material";
 
 export const NavItem = (props) => {
   const { href, icon, title, ...others } = props;
