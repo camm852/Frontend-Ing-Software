@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { signUpCall } from "../../utils";
-import Header from "../../components/Header/Header";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import Swal from "sweetalert2";
-import { useAuth } from "../../routes/auth-context";
 import ReCAPTCHA from "react-google-recaptcha";
+import { signUpCall } from "../../utils";
+import Header from "../../components/Header/index";
+import { useAuth } from "../../routes/auth-context";
 import {
   createTheme,
   ThemeProvider,
   Avatar,
-  Button,
   CssBaseline,
   TextField,
   Link,
@@ -90,7 +89,7 @@ export default function SignUp() {
           setLoading(false);
 
           Swal.fire({
-            title: "God job",
+            title: "Good job",
             text: "Correct autentication",
             icon: "success",
             showConfirmButton: false,
@@ -240,6 +239,24 @@ export default function SignUp() {
                       onChange={handleOnChange}
                     />
                   </Grid>
+                  {
+                    //TODO implementar seleccionar pregunta y contraseña
+                    /* <InputLabel id="demo-simple-select-standard-label"></InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                // value={age}
+                // onChange={handleChange}
+                label="age"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select> */
+                  }
                 </Grid>
                 <LoadingButton
                   disabled={captcha}

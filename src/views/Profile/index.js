@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import React, { useEffect } from "react";
 import { AccountProfile } from "../../components/Account/accountProfile";
 import { AccountProfileDetails } from "../../components/Account/accountProfileDetails";
 import DashBoardSidebar from "../../components/DashBoardSidebar";
-import { useSelector, useDispatch } from "react-redux";
-import { getInfoUser } from "../../redux/slices/userSlice";
-import { useLocation } from "react-router-dom";
 import { useAuth } from "../../routes/auth-context";
+import { Box, Container, Grid, Typography } from "@mui/material";
 
 export default function User() {
   const user = useAuth();

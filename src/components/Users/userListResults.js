@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import debounce from "lodash.debounce";
+import usePagination from "../../utils/Pagination";
 import {
   Box,
   Card,
@@ -15,7 +15,6 @@ import {
   SvgIcon,
   InputAdornment,
 } from "@mui/material";
-import usePagination from "../../utils/Pagination";
 import SearchIcon from "@mui/icons-material/Search";
 
 import { userServiceCall } from "../../utils";

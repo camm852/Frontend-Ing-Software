@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import { arrayShoe } from "../../assets/ShoesJson/index";
+import usePagination from "../../utils/Pagination";
 import {
   Box,
   Card,
@@ -16,9 +18,6 @@ import {
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { arrayShoe } from "../../assets/ShoesJson/Shoes";
-import usePagination from "../../utils/Pagination";
-import { myLocalStorage } from "../../utils";
 
 export const ProductListResults = () => {
   const [shoes, setShoes] = useState([{}]);
@@ -39,7 +38,6 @@ export const ProductListResults = () => {
   const onSearch = (e) => {
     e.preventDefault();
     let value = e.target.value;
-    // handler(value);
     const dataFilter = shoes.filter((item) => {
       return Object.values(item).join("").toLowerCase().includes(value);
     });
@@ -130,7 +128,6 @@ export const ProductListResults = () => {
         variant="outlined"
         onChange={handleChange}
       />
-      {/* <TablePagination component="div" /> */}
     </Card>
   );
 };

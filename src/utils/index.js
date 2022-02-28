@@ -1,7 +1,8 @@
-import React from "react";
 import apiCall from "../api/index";
 
 const url = "http://localhost:8080";
+
+//TODO refactorizar peticiones
 
 //Funcion de peticion de registro
 
