@@ -42,7 +42,7 @@ export default function Login() {
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email format").required("Required"),
     password: Yup.string("Enter your password")
-      .min(3, "Minimum 3 characters length")
+      .min(3, "Minimum 8 characters length")
       .required("Password is required"),
   });
 

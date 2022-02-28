@@ -89,7 +89,7 @@ function RequireAuth({ children }) {
 
 function RequireAdmin({ children }) {
   const auth = useAuth();
-  console.log(JSON.parse(auth.user));
+  console.log(auth.user.roleCode);
   const location = useLocation();
   if (auth.user.roleCode !== 2) {
     return (

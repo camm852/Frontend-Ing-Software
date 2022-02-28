@@ -33,6 +33,7 @@ const theme = createTheme({
 export default function SignUp() {
   const [captcha, setCaptcha] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,43 +62,48 @@ export default function SignUp() {
         password: "camm",
         address: "calle15679",
         identification: "13333333",
-        questionCode: 4,
-        secureAnswer: "velasques",
       }}
       onSubmit={async (values) => {
         setLoading(true);
-        const body = {
-          userId: values.identification,
-          userName: `${values.name} ${values.lastName}`,
-          email: values.email,
-          password: values.password,
-          address: values.address,
-          phone: values.telephone,
-        };
-        let response = await signUpCall(body);
+        if (values.password.length > 8) {
+          const body = {
+            userId: values.identification,
+            userName: `${values.name} ${values.lastName}`,
+            email: values.email,
+            password: values.password,
+            address: values.address,
+            phone: values.telephone,
+            questionCode: 3,
+            secureAnswer: "velasques",
+          };
+          let response = await signUpCall(body);
 
-        if (response.status !== 200) {
-          let payload = await response.json();
-          console.log(payload.message);
-          setLoading(false);
-          Swal.fire({
-            title: "Error",
-            text: `${payload.message}`,
-            icon: "error",
-          });
+          if (response.status !== 200) {
+            let payload = await response.json();
+            console.log(payload.message);
+            setLoading(false);
+            Swal.fire({
+              title: "Error",
+              text: `${payload.message}`,
+              icon: "error",
+            });
+          } else {
+            setLoading(false);
+
+            Swal.fire({
+              title: "Good job",
+              text: "Correct Sign Up",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            setTimeout(() => {
+              navigate("/login");
+            }, 2000);
+          }
         } else {
           setLoading(false);
-
-          Swal.fire({
-            title: "Good job",
-            text: "Correct autentication",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          setTimeout(() => {
-            navigate("/login");
-          }, 2000);
+          setError(true);
         }
       }}
     >
@@ -135,12 +141,12 @@ export default function SignUp() {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="off"
-                      name="firstName"
+                      name="name"
                       required
                       fullWidth
                       value={values.name}
-                      id="firstName"
-                      label="First Name"
+                      id="name"
+                      label="Name"
                       onChange={handleChange}
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
@@ -227,10 +233,10 @@ export default function SignUp() {
                       type="password"
                       id="password"
                       autoComplete="new-password"
-                      value={values.password}
                       onChange={handleChange}
-                      error={touched.password && Boolean(errors.password)}
-                      helperText={touched.password && errors.password}
+                      value={values.password}
+                      error={error}
+                      helperText="Minimum 8 characters length"
                     />
                   </Grid>
                   <Grid item xs={12}>

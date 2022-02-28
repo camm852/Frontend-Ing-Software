@@ -11,6 +11,7 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import Swal from "sweetalert2";
 
 export const AccountProfileDetails = (props) => {
   const userProvider = myLocalStorage.get("session");
@@ -35,6 +36,11 @@ export const AccountProfileDetails = (props) => {
     if (response.status !== 200) {
     } else {
       userAuth.updateUser({ values });
+      Swal.fire({
+        icon: "success",
+        title: "Good Job",
+        text: "The information has been changed",
+      });
     }
   };
 
