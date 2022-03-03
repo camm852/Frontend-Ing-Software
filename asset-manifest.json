@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/deploy-zhopy-app/static/css/main.bb56c4c1.css",
-    "main.js": "/deploy-zhopy-app/static/js/main.c69d2039.js",
-    "static/js/787.395ffb9a.chunk.js": "/deploy-zhopy-app/static/js/787.395ffb9a.chunk.js",
-    "static/media/bannerWebBrahma.jpg": "/deploy-zhopy-app/static/media/bannerWebBrahma.9684722d232ed70f715e.jpg",
-    "static/media/bannerWebUltimos.jpg": "/deploy-zhopy-app/static/media/bannerWebUltimos.256927b6a8524a4541e5.jpg",
-    "static/media/bannerWebPrecios.jpg": "/deploy-zhopy-app/static/media/bannerWebPrecios.741954281162d5ba9d82.jpg",
-    "static/media/profile.png": "/deploy-zhopy-app/static/media/profile.5faf09a7795d28bf5a2b.png",
-    "static/media/creditCard.svg": "/deploy-zhopy-app/static/media/creditCard.1b344d0ea12041dc3b5f92dc24fff27d.svg",
-    "index.html": "/deploy-zhopy-app/index.html",
-    "static/media/box.svg": "/deploy-zhopy-app/static/media/box.e8d19a051a03f5f1357fb46c76cf9020.svg",
-    "static/media/shield.svg": "/deploy-zhopy-app/static/media/shield.0a9fbdf83021375fa893dd719198ef5d.svg",
-    "main.bb56c4c1.css.map": "/deploy-zhopy-app/static/css/main.bb56c4c1.css.map",
-    "main.c69d2039.js.map": "/deploy-zhopy-app/static/js/main.c69d2039.js.map",
-    "787.395ffb9a.chunk.js.map": "/deploy-zhopy-app/static/js/787.395ffb9a.chunk.js.map"
+    "main.css": "/Frontend-Ing-Software/static/css/main.bb56c4c1.css",
+    "main.js": "/Frontend-Ing-Software/static/js/main.a6069e2f.js",
+    "static/js/787.395ffb9a.chunk.js": "/Frontend-Ing-Software/static/js/787.395ffb9a.chunk.js",
+    "static/media/bannerWebBrahma.jpg": "/Frontend-Ing-Software/static/media/bannerWebBrahma.9684722d232ed70f715e.jpg",
+    "static/media/bannerWebUltimos.jpg": "/Frontend-Ing-Software/static/media/bannerWebUltimos.256927b6a8524a4541e5.jpg",
+    "static/media/bannerWebPrecios.jpg": "/Frontend-Ing-Software/static/media/bannerWebPrecios.741954281162d5ba9d82.jpg",
+    "static/media/profile.png": "/Frontend-Ing-Software/static/media/profile.5faf09a7795d28bf5a2b.png",
+    "static/media/creditCard.svg": "/Frontend-Ing-Software/static/media/creditCard.1b344d0ea12041dc3b5f92dc24fff27d.svg",
+    "index.html": "/Frontend-Ing-Software/index.html",
+    "static/media/box.svg": "/Frontend-Ing-Software/static/media/box.e8d19a051a03f5f1357fb46c76cf9020.svg",
+    "static/media/shield.svg": "/Frontend-Ing-Software/static/media/shield.0a9fbdf83021375fa893dd719198ef5d.svg",
+    "main.bb56c4c1.css.map": "/Frontend-Ing-Software/static/css/main.bb56c4c1.css.map",
+    "main.a6069e2f.js.map": "/Frontend-Ing-Software/static/js/main.a6069e2f.js.map",
+    "787.395ffb9a.chunk.js.map": "/Frontend-Ing-Software/static/js/787.395ffb9a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bb56c4c1.css",
-    "static/js/main.c69d2039.js"
+    "static/js/main.a6069e2f.js"
   ]
 }
