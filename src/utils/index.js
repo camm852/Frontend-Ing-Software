@@ -1,7 +1,8 @@
 import apiCall from "../api/index";
 
-const url = "http://localhost:8080";
+// const url = "http://localhost:8080";
 
+const url = "http://34.125.175.40:8080";
 //TODO refactorizar peticiones
 
 //Funcion de peticion de registro

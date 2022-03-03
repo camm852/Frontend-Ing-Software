@@ -56,8 +56,8 @@ export default function Login() {
     <Formik
       validationSchema={validationSchema}
       initialValues={{
-        email: "camm@gmail.com",
-        password: "camm1234",
+        email: "",
+        password: "",
       }}
       onSubmit={async (values) => {
         setLoading(true);
@@ -77,7 +77,13 @@ export default function Login() {
       }) => (
         <ThemeProvider theme={theme}>
           <Header showSearch={false} />
-          <Container component="main" maxWidth="xs">
+          <Container
+            component="main"
+            maxWidth="xs"
+            sx={{
+              minWidth: "600px !important",
+            }}
+          >
             <CssBaseline />
 
             <Box

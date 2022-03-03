@@ -100,16 +100,21 @@ export const UserListToolbar = () => {
                       address: values.address,
                       roleCode: 1,
                       phone: values.telephone,
+                      questionCode: 3,
+                      secureAnswer: "velasques",
                     };
                     let response = await signUpCall(body);
 
                     if (response.status !== 200) {
                       setLoading(false);
+                      let payload = await response.json();
 
                       Swal.fire({
-                        customClass: {},
+                        customClass: {
+                          container: "my-swal",
+                        },
                         title: "Error",
-                        text: "Failed to Add User",
+                        text: `${payload.message}`,
                         icon: "error",
                       });
                     } else {

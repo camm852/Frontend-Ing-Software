@@ -33,7 +33,14 @@ const theme = createTheme({
 export default function SignUp() {
   const [captcha, setCaptcha] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [errorPass, setErrorPass] = useState(false);
+  const [errorId, setErrorId] = useState(false);
+  const [errorEmail, setErrorEmail] = useState({
+    format: false,
+    required: false,
+  });
+  const [errorPhone, setErrorPhone] = useState(false);
+  const [errorName, setErrorName] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,18 +61,23 @@ export default function SignUp() {
   ) : (
     <Formik
       initialValues={{
-        name: "carlos",
-        lastName: "marin",
-        email: "camm@gmail.com",
-        telephone: "3445678796",
-        userId: "1995670030",
-        password: "camm",
-        address: "calle15679",
-        identification: "13333333",
+        name: "",
+        lastName: "",
+        email: "",
+        telephone: "",
+        userId: "",
+        password: "",
+        address: "",
+        identification: "",
       }}
       onSubmit={async (values) => {
         setLoading(true);
-        if (values.password.length > 8) {
+        if (values.email.includes("@" && ".com")) {
+          // if (
+          //   values.password.length > 8 &&
+          //   values.identification.length > 8 &&
+          //   values.email.includes("@" && ".com")
+          // ) {
           const body = {
             userId: values.identification,
             userName: `${values.name} ${values.lastName}`,
@@ -76,34 +88,43 @@ export default function SignUp() {
             questionCode: 3,
             secureAnswer: "velasques",
           };
-          let response = await signUpCall(body);
+          try {
+            let response = await signUpCall(body);
 
-          if (response.status !== 200) {
-            let payload = await response.json();
-            console.log(payload.message);
-            setLoading(false);
-            Swal.fire({
-              title: "Error",
-              text: `${payload.message}`,
-              icon: "error",
-            });
-          } else {
-            setLoading(false);
+            if (response.status !== 200) {
+              let payload = await response.json();
+              console.log(payload.message);
+              setLoading(false);
+              Swal.fire({
+                title: "Error",
+                text: `${payload.message}`,
+                icon: "error",
+              });
+            } else {
+              setLoading(false);
 
-            Swal.fire({
-              title: "Good job",
-              text: "Correct Sign Up",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            setTimeout(() => {
-              navigate("/login");
-            }, 2000);
+              Swal.fire({
+                title: "Good job",
+                text: "Correct Sign Up",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              setTimeout(() => {
+                navigate("/login");
+              }, 2000);
+            }
+          } catch {
+            setLoading(false);
           }
         } else {
-          setLoading(false);
-          setError(true);
+          //   setLoading(false);
+          //   setErrorPass(true);
+          //   setErrorId(true);
+          setErrorEmail({ format: true });
+          values.password.length <= 1
+            ? setErrorEmail({ required: true })
+            : setErrorEmail({ required: false });
         }
       }}
     >
@@ -119,7 +140,13 @@ export default function SignUp() {
       }) => (
         <ThemeProvider theme={theme}>
           <Header showSearch={false} />
-          <Container component="main" maxWidth="xs">
+          <Container
+            component="main"
+            maxWidth="xs"
+            sx={{
+              minWidth: "590px !important",
+            }}
+          >
             <CssBaseline />
             <Box
               sx={{
@@ -142,19 +169,17 @@ export default function SignUp() {
                     <TextField
                       autoComplete="off"
                       name="name"
-                      required
                       fullWidth
                       value={values.name}
                       id="name"
                       label="Name"
                       onChange={handleChange}
-                      error={touched.name && Boolean(errors.name)}
-                      helperText={touched.name && errors.name}
+                      // error={touched.name && Boolean(errors.name)}
+                      // helperText={touched.name && errors.name}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      required
                       fullWidth
                       id="lastName"
                       label="Last Name"
@@ -168,19 +193,15 @@ export default function SignUp() {
                     <TextField
                       autoComplete="off"
                       name="telephone"
-                      required
                       fullWidth
                       id="telephone"
                       value={values.telephone}
                       label="Telephone"
                       onChange={handleChange}
-                      error={touched.telephone && Boolean(errors.telephone)}
-                      helperText={touched.telephone && errors.telephone}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      required
                       fullWidth
                       id="identification"
                       label="Identification"
@@ -188,17 +209,17 @@ export default function SignUp() {
                       autoComplete="off"
                       value={values.identification}
                       onChange={handleChange}
-                      error={
-                        touched.identification && Boolean(errors.identification)
-                      }
-                      helperText={
-                        touched.identification && errors.identification
-                      }
+                      // error={errorId}
+                      // helperText={
+                      //   errorId &&
+                      //   (values.identification.length <= 1
+                      //     ? "Required"
+                      //     : "Minimum 8 characters length")
+                      // }
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      required
                       fullWidth
                       id="address"
                       label="Address"
@@ -206,13 +227,10 @@ export default function SignUp() {
                       autoComplete="off"
                       value={values.address}
                       onChange={handleChange}
-                      error={touched.address && Boolean(errors.address)}
-                      helperText={touched.address && errors.address}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      required
                       fullWidth
                       id="email"
                       label="Email Address"
@@ -220,13 +238,17 @@ export default function SignUp() {
                       autoComplete="off"
                       value={values.email}
                       onChange={handleChange}
-                      error={touched.email && Boolean(errors.email)}
-                      helperText={touched.email && errors.email}
+                      // error={errorEmail["format"] || errorEmail["required"]}
+                      // helperText={
+                      //   errorEmail &&
+                      //   (values.email.length <= 1
+                      //     ? "Required"
+                      //     : "Invalid Format")
+                      // }
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      required
                       fullWidth
                       name="password"
                       label="Password"
@@ -235,8 +257,13 @@ export default function SignUp() {
                       autoComplete="new-password"
                       onChange={handleChange}
                       value={values.password}
-                      error={error}
-                      helperText="Minimum 8 characters length"
+                      // error={errorPass}
+                      // helperText={
+                      //   errorPass &&
+                      //   (values.password.length <= 1
+                      //     ? "Required"
+                      //     : "Minimum 8 characters length")
+                      // }
                     />
                   </Grid>
                   <Grid item xs={12}>
