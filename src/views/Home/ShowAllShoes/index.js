@@ -20,7 +20,7 @@ export default function ShowShoes() {
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
-        minWidth: "600px",
+        minWidth: "600.1px",
       }}
     >
       {arrayShoe.map((shoe, i) => {
