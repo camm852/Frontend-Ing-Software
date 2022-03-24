@@ -60,7 +60,6 @@ function ModalCardDetail() {
     boxShadow: 24,
     p: 2,
   };
-
   return (
     <Modal
       aria-labelledby="transition-modal-title"
