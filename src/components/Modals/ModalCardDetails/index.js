@@ -118,10 +118,10 @@ function ModalCardDetail() {
                         dispatch(add({ ...cardDetails.shoe, cant: 1 }));
                     }}
                   >
-                    {findIndexElement(shoesRedux, cardDetails.shoe.shoeCode) ===
+                    {findIndexElement(shoesRedux, cardDetails.shoe.shoeCode) !==
                     -1
-                      ? "Add to cart"
-                      : "Is added"}
+                      ? "Is added"
+                      : "Add to cart"}
                   </Button>
                 </CardActions>
               </Box>

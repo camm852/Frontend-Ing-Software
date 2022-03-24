@@ -49,7 +49,7 @@ export default function CardShoe(props) {
           {props.shoe.shoeName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {props.descripstion}
+          {props.description}
         </Typography>
         <Typography variant="body2" color="text.secondary"></Typography>
       </CardContent>

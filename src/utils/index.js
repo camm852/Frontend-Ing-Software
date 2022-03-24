@@ -1,8 +1,8 @@
 import apiCall from "../api/index";
 
-// url = "http://localhost:8080";
+const url = "http://localhost:8080";
 
-const url = "http://34.125.175.40:8080";
+//const url = "http://34.125.175.40:8080";
 
 //Funcion de peticion de registro
 export const signUpCall = async (user) => {
@@ -267,10 +267,10 @@ export const shoesServiceApiCall = async ({ form, service }) => {
   switch (service) {
     case "post": {
       const shoesApicCall = await apiCall({
-        url: `${url}/api/shoe/save`,
+        url: `${url}/api/shoes/save`,
+        method: "post",
         body: form,
-        header: {
-          "Content-type": "application/json",
+        headers: {
           Authorization: `Bearer ${myLocalStorage.get("token")}`,
         },
       });
@@ -279,6 +279,7 @@ export const shoesServiceApiCall = async ({ form, service }) => {
     case "get": {
       const shoesApicCall = await apiCall({
         url: `${url}/api/shoes/list`,
+        method: "get",
         header: {
           Authorization: `Bearer ${myLocalStorage.get("token")}`,
         },

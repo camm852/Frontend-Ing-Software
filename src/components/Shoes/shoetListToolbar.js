@@ -143,6 +143,15 @@ export const ProductListToolbar = () => {
                       service: "post",
                     });
 
+                    // let response = await apiCall({
+                    //   url: `http://localhost:8080/api/shoes/save`,
+                    //   method: "post",
+                    //   body: formData,
+                    //   headers: {
+                    //     Authorization: `Bearer ${myLocalStorage.get("token")}`,
+                    //   },
+                    // });
+
                     if (response.status !== 200) {
                       setLoading(false);
                       Swal.fire({
