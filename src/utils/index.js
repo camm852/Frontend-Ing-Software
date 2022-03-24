@@ -1,9 +1,8 @@
 import apiCall from "../api/index";
 
-const url = "http://localhost:8080";
+// url = "http://localhost:8080";
 
-// const url = "http://34.125.175.40:8080";
-//TODO refactorizar peticiones
+const url = "http://34.125.175.40:8080";
 
 //Funcion de peticion de registro
 
@@ -13,8 +12,6 @@ export const signUpCall = async (user) => {
       ...user,
       roleCode: 1,
     };
-
-    console.log(`${url}/api/user/save`);
 
     const signUpApiCall = await apiCall({
       method: "POST",
@@ -183,8 +180,6 @@ export const forgotPasswordServiceCall = async (
   service
 ) => {
   const encodeForm = (object) => {
-    //se tiene que armar es una url no un vector
-
     let formBody = Object.keys(object)
       .map(
         (key) => encodeURIComponent(key) + "=" + encodeURIComponent(object[key])
@@ -268,31 +263,14 @@ export const buyServiceApiCall = async ({ total, userId, shoesList }) => {
   return buyShoes;
 };
 
-//funcion para encontrar elementos en el array de zapatos
-
-export const findIndexElement = (array, item) => {
-  let count = -1;
-  array.map((element, i) => {
-    if (Object.values(element).join("").includes(item)) {
-      count = i;
-    }
-  });
-  console.log(count);
-  return count;
-};
-
 //funcion shoes service
 
 export const shoesServiceApiCall = async ({ form, service }) => {
-  console.log(service);
-  const formBody = {
-    ...form,
-  };
   switch (service) {
     case "post": {
       const shoesApicCall = await apiCall({
         url: `${url}/api/shoe/save`,
-        body: JSON.stringify(formBody),
+        body: form,
         header: {
           "Content-type": "application/json",
           Authorization: `Bearer ${myLocalStorage.get("token")}`,
@@ -318,7 +296,6 @@ export const shoesServiceApiCall = async ({ form, service }) => {
 
 export const orderServiceApiCall = async ({ service }) => {
   const auth = myLocalStorage.get("session");
-  console.log(auth.userId);
   switch (service) {
     case "get": {
       if (auth.roleCode === 2) {
@@ -331,7 +308,6 @@ export const orderServiceApiCall = async ({ service }) => {
         });
         return orderApiCall;
       } else {
-        console.log("entro");
         const orderApiCall = await apiCall({
           url: `${url}/api/order/list/${auth.userId}`,
           method: "get",
@@ -346,6 +322,30 @@ export const orderServiceApiCall = async ({ service }) => {
     default:
       break;
   }
+};
+
+export const categoryServiceApiCall = async () => {
+  const categoryApi = await apiCall({
+    url: `${url}/api/category/list`,
+    method: "get",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${myLocalStorage.get("token")}`,
+    },
+  });
+  return categoryApi;
+};
+
+//funcion para encontrar elementos en el array de zapatos
+
+export const findIndexElement = (array, item) => {
+  let count = -1;
+  array.map((element, i) => {
+    if (Object.values(element).join("").includes(item)) {
+      count = i;
+    }
+  });
+  return count;
 };
 
 //Funcion local storage

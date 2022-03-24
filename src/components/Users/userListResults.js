@@ -37,32 +37,13 @@ export const UserListResults = () => {
   const onSearch = (e) => {
     e.preventDefault();
     let value = e.target.value;
-    // handler(value);
     const dataFilter = users.filter((item) => {
       return Object.values(item).join("").toLowerCase().includes(value);
     });
-    console.log(dataFilter);
     if (dataFilter) {
       setUsersFilter(dataFilter);
     }
   };
-
-  // const handler = useCallback(
-  //   debounce((value) => {
-  //     if (value.length !== 0) {
-  //       const dataFilter = users.filter((item) => {
-  //         return Object.values(item).join("").toLowerCase().includes(value);
-  //       });
-  //       console.log(dataFilter);
-  // if (dataFilter) {
-  //   setUsersFilter(dataFilter);
-  // }
-  //     } else {
-  //       setUsersFilter(users);
-  //     }
-  //   }, 1000),
-  //   []
-  // );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(async () => {

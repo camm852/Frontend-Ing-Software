@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import React from "react";
+import { Box, Grid, Typography } from "@mui/material";
 import Header from "../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import CardCheckout from "../../components/Card/cardCheckout";
-import apiCall from "../../api";
 import Stripe from "react-stripe-checkout";
 import Swal from "sweetalert2";
-import "../../components/sweetStyle.css";
 import { useNavigate } from "react-router-dom";
-import { buyServiceApiCall, myLocalStorage } from "../../utils";
+import { buyServiceApiCall } from "../../utils";
 import { useAuth } from "../../routes/auth-context";
 import { clearShoes } from "../../redux/slices/cartSlice";
+import "../../components/sweetStyle.css";
 import axios from "axios";
 
 export default function Checkout() {

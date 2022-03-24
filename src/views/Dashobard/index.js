@@ -12,13 +12,8 @@ import {
   TableHead,
   TableRow,
   Pagination,
-  CardContent,
-  InputAdornment,
-  SvgIcon,
-  TextField,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { orderServiceApiCall, supplierServiceCall } from "../../utils";
+import { orderServiceApiCall } from "../../utils";
 import { useAuth } from "../../routes/auth-context";
 
 export default function Dashboard() {
@@ -34,26 +29,13 @@ export default function Dashboard() {
   const count = Math.ceil(ordersFilter.length / perPage);
   const _Orders = usePagination(ordersFilter, perPage);
 
-  const onSearch = (e) => {
-    e.preventDefault();
-    let value = e.target.value;
-    const dataFilter = orders.filter((item) => {
-      return Object.values(item).join("").toLowerCase().includes(value);
-    });
-    if (dataFilter) {
-      setOrdersFilter(dataFilter);
-    }
-  };
-
   const handleChange = (e, page) => {
     setPage(page);
     _Orders.jump(page);
   };
 
   useEffect(async () => {
-    // if (auth.user.roleCode === 2) {
     let response = await orderServiceApiCall({ service: "get" });
-    console.log(response);
     if (response.status === 200) {
       let info = await response.json();
       setOrders(info);

@@ -1,7 +1,6 @@
 import React from "react";
 import { Formik } from "formik";
 import Swal from "sweetalert2";
-import { arrayShoe } from "../../assets/ShoesJson/index";
 import {
   Box,
   Button,
@@ -20,8 +19,11 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import "../sweetStyle.css";
-import apiCall from "../../api";
-import { myLocalStorage } from "../../utils";
+import {
+  categoryServiceApiCall,
+  shoesServiceApiCall,
+  supplierServiceCall,
+} from "../../utils";
 
 export const ProductListToolbar = () => {
   const [loading, setLoading] = React.useState(false);
@@ -43,20 +45,9 @@ export const ProductListToolbar = () => {
     p: 4,
   };
 
-  // const hanldAddShoe = (values) => {
-  //   arrayShoe.push(values);
-  // };
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(async () => {
-    let response = await apiCall({
-      url: "http://localhost:8080/api/category/list",
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${myLocalStorage.get("token")}`,
-      },
-    });
+    let response = await categoryServiceApiCall();
     if (response.status === 200) {
       let info = await response.json();
       setCategories(info);
@@ -65,14 +56,7 @@ export const ProductListToolbar = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(async () => {
-    let response = await apiCall({
-      url: "http://localhost:8080/api/supplier/list",
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${myLocalStorage.get("token")}`,
-      },
-    });
+    let response = await supplierServiceCall(null, "list");
     if (response.status === 200) {
       let info = await response.json();
       setSuppliers(info);
@@ -154,16 +138,11 @@ export const ProductListToolbar = () => {
                     formData.append("shoesRequest", blob);
                     formData.append("image", input.files[0]);
 
-                    let response = await apiCall({
-                      url: "http://localhost:8080/api/shoes/save",
-                      method: "post",
-                      body: formData,
-                      headers: {
-                        Authorization: `Bearer ${myLocalStorage.get("token")}`,
-                      },
+                    let response = await shoesServiceApiCall({
+                      form: formData,
+                      service: "post",
                     });
 
-                    console.log(response);
                     if (response.status !== 200) {
                       setLoading(false);
                       Swal.fire({

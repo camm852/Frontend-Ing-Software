@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Carousel from "react-elastic-carousel";
 import CardShoe from "../../components/Card/CardShoe/index";
 import Header from "../../components/Header/index";
-// import { arrayShoe } from "../../assets/ShoesJson/index";
 import brahma from "../../assets/images/bannerWebBrahma.jpg";
 import precios from "../../assets/images/bannerWebPrecios.jpg";
 import ultimos from "../../assets/images/bannerWebUltimos.jpg";
@@ -31,8 +30,6 @@ export default function Home() {
   //States
 
   const [arrayShoe, setArrayShoe] = useState([{}]);
-  const [mapSiteState, setMapSiteState] = useState(false);
-  const [helpState, setHelpState] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
   //Refs

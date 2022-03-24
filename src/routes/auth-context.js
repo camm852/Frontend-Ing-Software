@@ -43,10 +43,7 @@ const AuthProvider = ({ children }) => {
           });
           setTimeout(() => {
             myLocalStorage.set("session", JSON.stringify(userInfo));
-            // setUser(JSON.stringify(userInfo));
-            // console.log(user);
             setUser(myLocalStorage.get("session"));
-            console.log(user);
           }, 3000);
         }
       }

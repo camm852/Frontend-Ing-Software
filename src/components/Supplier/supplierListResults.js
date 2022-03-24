@@ -36,7 +36,6 @@ export const SupplierListResults = () => {
     const dataFilter = suppliers.filter((item) => {
       return Object.values(item).join("").toLowerCase().includes(value);
     });
-    console.log(dataFilter);
     if (dataFilter) {
       setSuppliersFilter(dataFilter);
     }
@@ -49,7 +48,6 @@ export const SupplierListResults = () => {
 
   React.useEffect(async () => {
     let response = await supplierServiceCall(null, "list");
-    console.log(response);
     if (response.status === 200) {
       let data = await response.json();
       setSuppliers(data);

@@ -1,11 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ThemeProvider } from "@emotion/react";
 import CardCart from "../Card/CartCard/index";
 import { useAuth } from "../../routes/auth-context";
-import { arrayShoe } from "../../assets/ShoesJson/index";
-import { findIndexElement } from "../../utils";
 import {
   Avatar,
   Badge,
@@ -20,7 +18,6 @@ import {
   SwipeableDrawer,
   Toolbar,
   Typography,
-  Card,
 } from "@mui/material";
 import styled from "@mui/styled-engine";
 import SearchIcon from "@mui/icons-material/Search";
@@ -32,7 +29,6 @@ export default function Header({ showSearch, cantidad }) {
     right: false,
   });
   const shoesRedux = useSelector((state) => state.cart.value);
-  const dispatch = useDispatch();
   const SearchInput = styled(InputBase)({});
   const userProvider = useAuth();
   const navigate = useNavigate();
@@ -49,23 +45,6 @@ export default function Header({ showSearch, cantidad }) {
       },
     },
   });
-
-  const CardStyle = styled(Card)(({ theme }) => ({
-    "&:hover": {
-      boxShadow: "1px 1px 13px 0px rgba(0,0,0,0.75)",
-    },
-    "&": {
-      marginTop: "10px",
-      marginBottom: "10px",
-      maxWidth: "250px",
-    },
-    [theme.breakpoints.up("lg")]: {
-      marginLeft: "30px",
-    },
-    [theme.breakpoints.down("lg")]: {
-      marginLeft: "30px",
-    },
-  }));
 
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {

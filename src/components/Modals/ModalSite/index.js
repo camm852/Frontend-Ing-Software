@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { close } from "../../../redux/slices/modalMapSlice";
@@ -112,7 +111,6 @@ function ModalMapSite() {
                         boxShadow: "none !important",
                         mt: 1,
                       }}
-                      // onClick={navigate("/dashboard")}
                     >
                       <Link
                         to={path.href}
@@ -156,7 +154,6 @@ function ModalMapSite() {
                         boxShadow: "none !important",
                         mt: 1,
                       }}
-                      // onClick={navigate("/dashboard")}
                     >
                       <Link
                         to={path.href}

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import * as Yup from "yup";
 import { Formik } from "formik";
 import Swal from "sweetalert2";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -90,7 +89,6 @@ export default function SignUp() {
         answer: "",
       }}
       onSubmit={async (values) => {
-        console.log(values.question);
         const _password = values.password.length;
         const _identification = values.identification.length;
         const _phone = values.telephone.length;
@@ -124,7 +122,6 @@ export default function SignUp() {
 
             if (response.status !== 200) {
               let payload = await response.json();
-              console.log(payload.message);
               setLoading(false);
               Swal.fire({
                 title: "Error",

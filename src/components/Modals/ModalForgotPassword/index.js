@@ -8,9 +8,6 @@ import {
   Box,
   TextField,
   Typography,
-  InputLabel,
-  Select,
-  MenuItem,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import Swal from "sweetalert2";
@@ -262,7 +259,6 @@ function ModalForgotpassword() {
                     loading={loadingCheck}
                     variant="contained"
                     fullWidth
-                    // type="submit"
                     onClick={handleSubmitAnswer}
                     sx={{
                       mt: 1,
@@ -310,7 +306,6 @@ function ModalForgotpassword() {
                     fullWidth
                     loading={loadingChange}
                     variant="contained"
-                    // type="submit"
                     onClick={handleSubmitPassword}
                     onChange={handleChangePassword}
                     sx={{

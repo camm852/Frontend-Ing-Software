@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { close } from "../../../redux/slices/modalCardDetail";
 import {
@@ -6,11 +6,7 @@ import {
   Fade,
   Modal,
   Box,
-  TextField,
   Typography,
-  InputLabel,
-  Select,
-  MenuItem,
   styled,
   Card,
   Button,
@@ -19,8 +15,6 @@ import {
   CardMedia,
   CardHeader,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import Swal from "sweetalert2";
 import "../../../components/sweetStyle.css";
 import { findIndexElement } from "../../../utils";
 import { add } from "../../../redux/slices/cartSlice";
@@ -37,9 +31,7 @@ function ModalCardDetail() {
   };
 
   const CardStyle = styled(Card)(({ theme }) => ({
-    "&:hover": {
-      // boxShadow: "1px 1px 13px 0px rgba(0,0,0,0.75)",
-    },
+    "&:hover": {},
     "&": {
       marginTop: "10px",
       boxShadow: "none",

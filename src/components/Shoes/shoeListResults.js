@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { arrayShoe } from "../../assets/ShoesJson/index";
 import usePagination from "../../utils/Pagination";
 import {
   Box,
@@ -42,9 +41,7 @@ export const ProductListResults = () => {
     const dataFilter = shoes.filter((item) => {
       return Object.values(item).join("").toLowerCase().includes(value);
     });
-    console.log(dataFilter);
     if (dataFilter) {
-      console.log(1);
       setShoesFilter(dataFilter);
     }
   };
@@ -52,9 +49,7 @@ export const ProductListResults = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(async () => {
     let response = await shoesServiceApiCall({ service: "get" });
-    console.log(response);
     let info = await response.json();
-    console.log(info);
     setShoes(info);
     setShoesFilter(info);
   }, []);

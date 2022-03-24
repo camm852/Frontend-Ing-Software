@@ -29,7 +29,6 @@ export const NavItem = (props) => {
         disableRipple
         sx={{
           backgroundColor: active && "#fff",
-          borderRadius: 1,
           color: active ? "primary.main" : "#fff",
           fontWeight: active && "fontWeightBold",
           justifyContent: "flex-start",

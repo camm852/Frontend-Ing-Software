@@ -128,11 +128,6 @@ function DashBoardSidebar(props) {
             },
           }}
         >
-          <Box sx={{ ml: 5, mt: 1 }}>
-            {/* {
-              //TODO logo de la pagina
-            } */}
-          </Box>
           {drawer}
           <Box
             sx={{
@@ -145,7 +140,6 @@ function DashBoardSidebar(props) {
               onClick={logout}
               startIcon={<LogoutIcon />}
               sx={{
-                borderRadius: 1,
                 color: "#fff",
                 fontWeight: "fontWeightBold",
                 justifyContent: "flex-start",
@@ -184,11 +178,6 @@ function DashBoardSidebar(props) {
           }}
           open
         >
-          <Box sx={{ ml: 5, mt: 1 }}>
-            {/* {
-              //TODO logo de la pagina
-            } */}
-          </Box>
           {drawer}
           <Box
             sx={{
@@ -202,7 +191,6 @@ function DashBoardSidebar(props) {
               onClick={logout}
               startIcon={<LogoutIcon />}
               sx={{
-                borderRadius: 1,
                 color: "#fff",
                 fontWeight: "fontWeightBold",
                 justifyContent: "flex-start",

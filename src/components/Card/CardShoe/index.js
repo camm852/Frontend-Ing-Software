@@ -1,7 +1,5 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { findIndexElement } from "../../../utils";
-import { add } from "../../../redux/slices/cartSlice";
 import {
   Card,
   CardContent,
@@ -10,12 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import { open } from "../../../redux/slices/modalCardDetail";
-import { Box } from "@mui/system";
 
 const CardStyle = styled(Card)(({ theme }) => ({
-  "&:hover": {
-    // boxShadow: "1px 1px 13px 0px rgba(0,0,0,0.75)",
-  },
+  "&:hover": {},
   "&": {
     cursor: "pointer",
     marginTop: "10px",
@@ -51,10 +46,10 @@ export default function CardShoe(props) {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Shoe
+          {props.shoe.shoeName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {props.description}
+          {props.descripstion}
         </Typography>
         <Typography variant="body2" color="text.secondary"></Typography>
       </CardContent>
