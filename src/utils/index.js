@@ -5,7 +5,6 @@ import apiCall from "../api/index";
 const url = "http://34.125.175.40:8080";
 
 //Funcion de peticion de registro
-
 export const signUpCall = async (user) => {
   try {
     const params = {
@@ -26,7 +25,6 @@ export const signUpCall = async (user) => {
 };
 
 //Funcion de peticion de inicio de sesion
-
 export const signInCall = async (user) => {
   try {
     //Parametros
