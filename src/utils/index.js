@@ -1,8 +1,8 @@
 import apiCall from "../api/index";
 
-// const url = "http://localhost:8080";
+const url = "http://localhost:8080";
 
-const url = "http://34.125.175.40:8080";
+// const url = "http://34.125.175.40:8080";
 //TODO refactorizar peticiones
 
 //Funcion de peticion de registro
@@ -122,37 +122,153 @@ export const userServiceCall = async ({ values, type, service }) => {
   }
 };
 
-export const supplierServiceCall = async (values, type, service) => {
+export const supplierServiceCall = async (values, type) => {
   const _Type = type.toUpperCase();
 
   switch (_Type) {
-    case "ADD": {
-      const supplierServiceApiCall = await apiCall({
-        method: "POST",
-        url: `${url}/api/${service}/save`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${myLocalStorage.get("token")}`,
-        },
-      });
-      break;
-    }
     case "LIST": {
       const supplierServiceApiCall = await apiCall({
         method: "GET",
-        url: `${url}/api/${service}/list`,
+        url: `${url}/api/supplier/list`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${myLocalStorage.get("token")}`,
         },
       });
-      break;
+      return supplierServiceApiCall;
+    }
+    case "ADD": {
+      const supplierServiceApiCall = await apiCall({
+        method: "POST",
+        url: `${url}/api/supplier/save`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myLocalStorage.get("token")}`,
+        },
+        body: JSON.stringify(values),
+      });
+      return supplierServiceApiCall;
     }
 
     default:
       break;
   }
 };
+
+export const cityServiceCall = async () => {
+  const cityServiceApiCall = await apiCall({
+    method: "GET",
+    url: `${url}/api/city/list`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${myLocalStorage.get("token")}`,
+    },
+  });
+  return cityServiceApiCall;
+};
+
+export const questionServiceCall = async () => {
+  const questionServiceApiCall = await apiCall({
+    method: "GET",
+    url: `${url}/api/question/list`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return questionServiceApiCall;
+};
+
+export const forgotPasswordServiceCall = async (
+  { emailState, answerState, password },
+  service
+) => {
+  const encodeForm = (object) => {
+    //se tiene que armar es una url no un vector
+
+    let formBody = Object.keys(object)
+      .map(
+        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(object[key])
+      )
+      .join("&");
+    return formBody;
+  };
+  switch (service) {
+    case "email": {
+      const form = {
+        email: emailState,
+      };
+      let formBody = encodeForm(form);
+      const checkEmailApiCall = await apiCall({
+        url: `${url}/api/user/check/email`,
+        method: "post",
+        body: formBody,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+      });
+      return checkEmailApiCall;
+    }
+
+    case "answer": {
+      const form = {
+        email: emailState,
+        secureAnswer: answerState,
+      };
+      let formBody = encodeForm(form);
+      const checkAnswerApiCall = await apiCall({
+        url: `${url}/api/user/check/answer`,
+        method: "post",
+        body: formBody,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+      });
+      return checkAnswerApiCall;
+    }
+    case "password": {
+      const form = {
+        email: emailState,
+        secureAnswer: answerState,
+        newPassword: password,
+      };
+      const formBody = { ...form };
+      const restorePasswordApiCall = await apiCall({
+        url: `${url}/api/user/restore`,
+        method: "put",
+        body: JSON.stringify(formBody),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return restorePasswordApiCall;
+    }
+    default:
+      break;
+  }
+};
+
+//Funcion realizar compra
+
+export const buyServiceApiCall = async ({ total, userId, shoesList }) => {
+  let formBody = {
+    total: Number(total),
+    userId: userId,
+    shoesList: shoesList,
+  };
+
+  const buyShoes = await apiCall({
+    url: `${url}/api/buy/save`,
+    method: "post",
+    body: JSON.stringify(formBody),
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${myLocalStorage.get("token")}`,
+    },
+  });
+  return buyShoes;
+};
+
+//funcion para encontrar elementos en el array de zapatos
 
 export const findIndexElement = (array, item) => {
   let count = -1;
@@ -161,11 +277,75 @@ export const findIndexElement = (array, item) => {
       count = i;
     }
   });
-
+  console.log(count);
   return count;
+};
 
-  // if (!find) return -1;
-  // else return 1;
+//funcion shoes service
+
+export const shoesServiceApiCall = async ({ form, service }) => {
+  console.log(service);
+  const formBody = {
+    ...form,
+  };
+  switch (service) {
+    case "post": {
+      const shoesApicCall = await apiCall({
+        url: `${url}/api/shoe/save`,
+        body: JSON.stringify(formBody),
+        header: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${myLocalStorage.get("token")}`,
+        },
+      });
+      return shoesApicCall;
+    }
+    case "get": {
+      const shoesApicCall = await apiCall({
+        url: `${url}/api/shoes/list`,
+        header: {
+          Authorization: `Bearer ${myLocalStorage.get("token")}`,
+        },
+      });
+      return shoesApicCall;
+    }
+    default:
+      break;
+  }
+};
+
+//funcion para traer todos los pedidos
+
+export const orderServiceApiCall = async ({ service }) => {
+  const auth = myLocalStorage.get("session");
+  console.log(auth.userId);
+  switch (service) {
+    case "get": {
+      if (auth.roleCode === 2) {
+        const orderApiCall = await apiCall({
+          url: `${url}/api/order/list`,
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${myLocalStorage.get("token")}`,
+          },
+        });
+        return orderApiCall;
+      } else {
+        console.log("entro");
+        const orderApiCall = await apiCall({
+          url: `${url}/api/order/list/${auth.userId}`,
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${myLocalStorage.get("token")}`,
+          },
+        });
+        return orderApiCall;
+      }
+    }
+
+    default:
+      break;
+  }
 };
 
 //Funcion local storage

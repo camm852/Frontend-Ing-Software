@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
+import { shoesServiceApiCall } from "../../utils";
 
 export const ProductListResults = () => {
   const [shoes, setShoes] = useState([{}]);
@@ -48,9 +49,14 @@ export const ProductListResults = () => {
     }
   };
 
-  React.useEffect(() => {
-    setShoes(arrayShoe);
-    setShoesFilter(arrayShoe);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(async () => {
+    let response = await shoesServiceApiCall({ service: "get" });
+    console.log(response);
+    let info = await response.json();
+    console.log(info);
+    setShoes(info);
+    setShoesFilter(info);
   }, []);
 
   return (
@@ -96,7 +102,7 @@ export const ProductListResults = () => {
               {_Shoes.currentData().map((shoe) => {
                 return (
                   <TableRow hover>
-                    <TableCell>{shoe.code}</TableCell>
+                    <TableCell>{shoe.shoeCode}</TableCell>
                     <TableCell>
                       <Box
                         sx={{
@@ -104,13 +110,13 @@ export const ProductListResults = () => {
                           display: "flex",
                         }}
                       >
-                        {shoe.name}
+                        {shoe.shoeName}
                       </Box>
                     </TableCell>
                     <TableCell>{shoe.price}</TableCell>
                     <TableCell>{shoe.stock}</TableCell>
-                    <TableCell>{shoe.category}</TableCell>
-                    <TableCell>{shoe.supplier}</TableCell>
+                    <TableCell>{shoe.categoryName}</TableCell>
+                    <TableCell>{shoe.supplierName}</TableCell>
                     <TableCell>{shoe.description}</TableCell>
                   </TableRow>
                 );

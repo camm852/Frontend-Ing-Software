@@ -14,6 +14,7 @@ import Users from "../views/Users/index";
 import Shoes from "../views/Shoes";
 import Suppliers from "../views/Suppliers";
 import { useAuth } from "./auth-context";
+import Checkout from "../views/Checkout";
 
 export default function RoutesApp() {
   return (
@@ -65,6 +66,14 @@ export default function RoutesApp() {
               <RequireAdmin>
                 <Suppliers />
               </RequireAdmin>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <RequireAuth>
+              <Checkout />
             </RequireAuth>
           }
         />

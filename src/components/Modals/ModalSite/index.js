@@ -145,9 +145,9 @@ function ModalMapSite() {
               <Typography component="h1" variant="h6">
                 Routes for User
               </Typography>
-              {pathsUser.map((path) => {
+              {pathsUser.map((path, i) => {
                 return (
-                  <Box>
+                  <Box key={i}>
                     <Button
                       variant="contained"
                       sx={{

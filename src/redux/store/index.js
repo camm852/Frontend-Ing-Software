@@ -4,6 +4,7 @@ import cartReducer from "../slices/cartSlice";
 import mapReducer from "../slices/modalMapSlice";
 import helpReducer from "../slices/modalHelpSlice";
 import forgotpasswordReducer from "../slices/modalForgotPass";
+import detailReducer from "../slices/modalCardDetail";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     map: mapReducer,
     help: helpReducer,
     forgotpassword: forgotpasswordReducer,
+    detail: detailReducer,
   },
 });
 

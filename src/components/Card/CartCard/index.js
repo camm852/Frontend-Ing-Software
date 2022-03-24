@@ -28,7 +28,7 @@ export default function CardCart(props) {
       maxWidth: "250px",
     },
     [theme.breakpoints.up("lg")]: {
-      marginLeft: "30px",
+      marginLeft: "20px",
     },
     [theme.breakpoints.down("lg")]: {
       marginLeft: "30px",
@@ -52,7 +52,7 @@ export default function CardCart(props) {
           <CardContent sx={{ mb: -3 }}>
             <Box sx={{ display: "block" }}>
               <Typography gutterBottom variant="h5" component="div">
-                {props.shoe.name}
+                {props.shoe.shoeName}
               </Typography>
             </Box>
 
@@ -101,7 +101,7 @@ export default function CardCart(props) {
         <Box>
           <CardMedia
             component="img"
-            image={props.shoe.image}
+            image={`data:image/jpeg;base64,${props.shoe.imageBytes}`}
             sx={{ width: "120px", pt: "40px" }}
           />
         </Box>

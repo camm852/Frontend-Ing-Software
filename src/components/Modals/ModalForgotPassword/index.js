@@ -15,13 +15,10 @@ import {
 import { LoadingButton } from "@mui/lab";
 import Swal from "sweetalert2";
 import "../../../components/sweetStyle.css";
+import { forgotPasswordServiceCall } from "../../../utils";
 
 function ModalForgotpassword() {
-  //TODO desquemar datos
-
-  const email = "camm@gmail.com";
-  const answerQuestion = "linda";
-
+  const [question, setQuestion] = useState("");
   const [emailState, setEmailState] = useState("");
   const [confirmEmail, setConfirmEmail] = useState(false);
   const [answerState, setAnswerState] = useState("");
@@ -36,6 +33,9 @@ function ModalForgotpassword() {
   const dispatch = useDispatch();
 
   const handleCloseModalForgotpassword = () => {
+    setEmailState("");
+    setAnswerState("");
+    setPassword("");
     setConfirmEmail(false);
     setAnswerConfirm(false);
     dispatch(close());
@@ -53,9 +53,13 @@ function ModalForgotpassword() {
     setPassword(e.target.value);
   };
 
-  const handleSubmitEmail = () => {
+  const handleSubmitEmail = async () => {
     setLoadingSearch(true);
-    if (emailState !== email) {
+
+    let response = await forgotPasswordServiceCall({ emailState }, "email");
+    let info = await response.text();
+    setQuestion(info);
+    if (!response.ok) {
       setLoadingSearch(false);
       Swal.fire({
         customClass: {
@@ -69,14 +73,19 @@ function ModalForgotpassword() {
       setTimeout(() => {
         setConfirmEmail(true);
         setLoadingSearch(false);
-      }, 2000);
+      }, 1000);
     }
   };
 
-  const handleSubmitAnswer = (e) => {
-    e.preventDefault();
+  const handleSubmitAnswer = async (e) => {
     setLoadingCheck(true);
-    if (answerState !== answerQuestion) {
+
+    let response = await forgotPasswordServiceCall(
+      { emailState, answerState },
+      "answer"
+    );
+
+    if (!response.ok) {
       setLoadingCheck(false);
       Swal.fire({
         customClass: {
@@ -94,32 +103,64 @@ function ModalForgotpassword() {
     }
   };
 
-  const handleSubmitPassword = (values) => {
+  const handleSubmitPassword = async (values) => {
+    let response = await forgotPasswordServiceCall(
+      { emailState, answerState, password },
+      "password"
+    );
+
     setLoadingChange(true);
-    if (password.length !== 0) {
-      Swal.fire({
-        customClass: {
-          container: "my-swal",
-        },
-        title: "Good Job",
-        text: `Your password have been changed`,
-        icon: "success",
-      });
-      setTimeout(() => {
-        setConfirmEmail(true);
-        setLoadingSearch(false);
-        dispatch(close());
-      }, 2000);
+    if (password.length !== 0 && password.length >= 8) {
+      if (!response.ok) {
+        Swal.fire({
+          customClass: {
+            container: "my-swal",
+          },
+          title: "Good Job",
+          text: `Your password have not been changed`,
+          icon: "success",
+        });
+        setTimeout(() => {
+          setConfirmEmail(true);
+          setLoadingSearch(false);
+          dispatch(close());
+        }, 2000);
+      } else {
+        Swal.fire({
+          customClass: {
+            container: "my-swal",
+          },
+          title: "Good Job",
+          text: `Your password have been changed`,
+          icon: "success",
+        });
+        setTimeout(() => {
+          setConfirmEmail(true);
+          setLoadingSearch(false);
+          dispatch(close());
+        }, 2000);
+      }
     } else {
       setLoadingChange(false);
-      Swal.fire({
-        customClass: {
-          container: "my-swal",
-        },
-        title: "¡Please!",
-        text: `Write a password`,
-        icon: "error",
-      });
+      if (password.length === 0) {
+        Swal.fire({
+          customClass: {
+            container: "my-swal",
+          },
+          title: "¡Please!",
+          text: `Write one password`,
+          icon: "error",
+        });
+      } else {
+        Swal.fire({
+          customClass: {
+            container: "my-swal",
+          },
+          title: "¡Please!",
+          text: `Type a password larger than 8 characters`,
+          icon: "error",
+        });
+      }
     }
   };
 
@@ -153,55 +194,59 @@ function ModalForgotpassword() {
     >
       <Fade in={helpState}>
         <Box sx={modalStyle}>
-          <Box>
+          {!confirmEmail && (
             <Box>
-              <Typography
-                component="h2"
-                variant="h5"
-                sx={{ textAlign: "center" }}
-              >
-                Enter your email
-              </Typography>
-              <TextField
-                required
-                margin="normal"
-                name="emailModal"
-                id="emailModal"
-                label="Email Address"
-                autoComplete="off"
-                autoFocus
-                onChange={handleChangeEmail}
-                sx={{ mt: "20px" }}
-              />
-              <Typography sx={{ textAlign: "center !important" }}>
-                <LoadingButton
-                  loading={loadingSearch}
-                  variant="contained"
-                  onClick={handleSubmitEmail}
-                  sx={{
-                    mt: 1,
-                    mb: 2,
-                    boxShadow: "none !important",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  Search
-                </LoadingButton>
-              </Typography>
-            </Box>
-          </Box>
-          {confirmEmail && (
-            <Box sx={{ mt: "30px" }}>
               <Box>
                 <Typography
                   component="h2"
                   variant="h5"
-                  sx={{ textAlign: "center" }}
+                  sx={{ textAlign: "center", mb: "20px" }}
                 >
-                  What is the name of your first pet?
+                  Enter your email
+                </Typography>
+                <TextField
+                  required
+                  margin="normal"
+                  name="emailModal"
+                  id="emailModal"
+                  label="Email Address"
+                  autoComplete="off"
+                  autoFocus
+                  onChange={handleChangeEmail}
+                  sx={{ mt: "20px" }}
+                />
+                <Typography sx={{ textAlign: "center !important" }}>
+                  <LoadingButton
+                    fullWidth
+                    loading={loadingSearch}
+                    variant="contained"
+                    onClick={handleSubmitEmail}
+                    sx={{
+                      mt: 1,
+                      mb: 2,
+                      boxShadow: "none !important",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Search
+                  </LoadingButton>
+                </Typography>
+              </Box>
+            </Box>
+          )}
+          {confirmEmail && !answerConfirm && (
+            <Box sx={{ pt: "10px" }}>
+              <Box>
+                <Typography
+                  component="h2"
+                  variant="h5"
+                  sx={{ textAlign: "center", mb: "20px" }}
+                >
+                  {question}
                 </Typography>
                 <Typography sx={{ textAlign: "center" }}>
                   <TextField
+                    fullWidth
                     margin="normal"
                     name="answer"
                     id="answer"
@@ -216,6 +261,7 @@ function ModalForgotpassword() {
                   <LoadingButton
                     loading={loadingCheck}
                     variant="contained"
+                    fullWidth
                     // type="submit"
                     onClick={handleSubmitAnswer}
                     sx={{
@@ -234,19 +280,20 @@ function ModalForgotpassword() {
           {answerConfirm && (
             <Box
               component="form"
-              sx={{ mt: "30px" }}
+              sx={{ pt: "10px" }}
               onSubmit={handleSubmitPassword}
             >
               <Box>
                 <Typography
                   component="h2"
                   variant="h5"
-                  sx={{ textAlign: "center" }}
+                  sx={{ textAlign: "center", mb: "20px" }}
                 >
                   Write the new password
                 </Typography>
                 <Typography sx={{ textAlign: "center" }}>
                   <TextField
+                    fullWidth
                     type="password"
                     margin="normal"
                     name="passwrod"
@@ -260,6 +307,7 @@ function ModalForgotpassword() {
                 </Typography>
                 <Typography sx={{ textAlign: "center !important" }}>
                   <LoadingButton
+                    fullWidth
                     loading={loadingChange}
                     variant="contained"
                     // type="submit"

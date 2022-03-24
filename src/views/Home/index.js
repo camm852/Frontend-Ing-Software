@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Carousel from "react-elastic-carousel";
 import CardShoe from "../../components/Card/CardShoe/index";
 import Header from "../../components/Header/index";
-import { arrayShoe } from "../../assets/ShoesJson/index";
+// import { arrayShoe } from "../../assets/ShoesJson/index";
 import brahma from "../../assets/images/bannerWebBrahma.jpg";
 import precios from "../../assets/images/bannerWebPrecios.jpg";
 import ultimos from "../../assets/images/bannerWebUltimos.jpg";
@@ -22,12 +22,15 @@ import {
 } from "@mui/material";
 import HouseIcon from "@mui/icons-material/House";
 import "./style.css";
+import ModalCardDetail from "../../components/Modals/ModalCardDetails";
+import { shoesServiceApiCall } from "../../utils";
 
 const items = [brahma, precios, ultimos];
 
 export default function Home() {
   //States
 
+  const [arrayShoe, setArrayShoe] = useState([{}]);
   const [mapSiteState, setMapSiteState] = useState(false);
   const [helpState, setHelpState] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -60,13 +63,19 @@ export default function Home() {
     { width: theme.breakpoints.values.lg, itemsToShow: 5 },
   ];
 
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
     document.title = "Home";
+    let response = await shoesServiceApiCall({ service: "get" });
+    let info = await response.json();
+    setArrayShoe(info);
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <Header showSearch={showAll} />
+      <ModalCardDetail />
+
       {showAll ? (
         <Box sx={{ paddingTop: "40px" }}>
           <Box sx={{ minWidth: "600px" }}>
@@ -153,10 +162,10 @@ export default function Home() {
                       <CardShoe
                         key={i}
                         code={shoe.code}
-                        image={shoe.image}
                         alt={shoe.alt}
                         description={shoe.description}
                         price={shoe.price}
+                        image={shoe.imageBytes}
                         shoe={shoe}
                       />
                     );

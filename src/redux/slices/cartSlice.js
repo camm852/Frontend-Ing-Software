@@ -7,29 +7,31 @@ export const cartSlice = createSlice({
   },
   reducers: {
     add: (state, action) => {
-      state.value.push(JSON.stringify(action.payload));
+      state.value.push(action.payload);
     },
     increase: (state, action) => {
-      let shoe = JSON.parse(state.value[action.payload]);
+      let shoe = state.value[action.payload];
       shoe.cant === shoe.stock ? (shoe.cant = shoe.stock) : (shoe.cant += 1);
-      state.value[action.payload] = JSON.stringify(shoe);
+      state.value[action.payload] = shoe;
     },
     decrease: (state, action) => {
-      let shoe = JSON.parse(state.value[action.payload]);
+      let shoe = state.value[action.payload];
       shoe.cant > 1 ? (shoe.cant -= 1) : (shoe.cant = 1);
-      state.value[action.payload] = JSON.stringify(shoe);
+      state.value[action.payload] = shoe;
     },
     deleteShoe: (state, action) => {
-      // let shoe = JSON.stringify(state.value);
-      // console.log(shoe);
-      // let shoes = shoe.slice(action.payload, 1);
-      // console.log(shoes);
-      // state.value = shoes;
+      let shoes = state.value;
+      let shoe = state.value[action.payload];
+      let newShoes = shoes.filter((item) => item.shoeCode !== shoe.shoeCode);
+      state.value = newShoes;
     },
-    update: (state, action) => {},
+    clearShoes: (state, action) => {
+      state.value = [];
+    },
   },
 });
 
 export default cartSlice.reducer;
 
-export const { add, decrease, increase, deleteShoe } = cartSlice.actions;
+export const { add, decrease, increase, deleteShoe, clearShoes } =
+  cartSlice.actions;

@@ -1,6 +1,6 @@
 export let arrayShoe = [
   {
-    code: 101,
+    code: "ZP1",
     name: "Shoe 1",
     category: "sport",
     supplier: "bimbo",
@@ -13,7 +13,7 @@ export let arrayShoe = [
   },
 
   {
-    code: 102,
+    code: "ZP2",
     name: "Shoe 2",
     category: "sport",
     supplier: "bimbo",
@@ -25,7 +25,7 @@ export let arrayShoe = [
     price: 200,
   },
   {
-    code: 103,
+    code: "ZP3",
     name: "Shoe 3",
     category: "sport",
     supplier: "bimbo",
@@ -37,7 +37,7 @@ export let arrayShoe = [
     price: 200,
   },
   {
-    code: 104,
+    code: "ZP4",
     name: "Shoe 4",
     category: "sport",
     supplier: "bimbo",
@@ -49,7 +49,7 @@ export let arrayShoe = [
     price: 200,
   },
   {
-    code: 105,
+    code: "ZP5",
     name: "Shoe 5",
     category: "sport",
     supplier: "bimbo",
@@ -61,7 +61,7 @@ export let arrayShoe = [
     price: 200,
   },
   {
-    code: 106,
+    code: "ZP6",
     name: "Shoe 6",
     category: "sport",
     supplier: "bimbo",

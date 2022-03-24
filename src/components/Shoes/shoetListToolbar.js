@@ -13,13 +13,21 @@ import {
   Modal,
   Backdrop,
   Fade,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import "../sweetStyle.css";
+import apiCall from "../../api";
+import { myLocalStorage } from "../../utils";
 
 export const ProductListToolbar = () => {
   const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [categories, setCategories] = React.useState([{}]);
+  const [suppliers, setSuppliers] = React.useState([{}]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -38,6 +46,38 @@ export const ProductListToolbar = () => {
   // const hanldAddShoe = (values) => {
   //   arrayShoe.push(values);
   // };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(async () => {
+    let response = await apiCall({
+      url: "http://localhost:8080/api/category/list",
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${myLocalStorage.get("token")}`,
+      },
+    });
+    if (response.status === 200) {
+      let info = await response.json();
+      setCategories(info);
+    }
+  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(async () => {
+    let response = await apiCall({
+      url: "http://localhost:8080/api/supplier/list",
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${myLocalStorage.get("token")}`,
+      },
+    });
+    if (response.status === 200) {
+      let info = await response.json();
+      setSuppliers(info);
+    }
+  }, []);
 
   return (
     <Box sx={{ mb: 2 }}>
@@ -95,18 +135,36 @@ export const ProductListToolbar = () => {
                   }}
                   onSubmit={async (values) => {
                     setLoading(true);
+                    let input = document.querySelector('input[type="file"]');
                     const body = {
-                      code: values.code,
-                      name: values.name,
+                      shoeCode: values.code,
+                      shoeName: values.name,
                       price: values.price,
                       stock: values.stock,
-                      category: values.category,
-                      supplier: values.supplier,
                       description: values.description,
-                      image: values.image,
+                      categoryCode: values.category,
+                      supplierNit: values.supplier,
                     };
 
-                    if (!arrayShoe.push(values)) {
+                    const json = JSON.stringify(body);
+                    const blob = new Blob([json], {
+                      type: "application/json",
+                    });
+                    let formData = new FormData();
+                    formData.append("shoesRequest", blob);
+                    formData.append("image", input.files[0]);
+
+                    let response = await apiCall({
+                      url: "http://localhost:8080/api/shoes/save",
+                      method: "post",
+                      body: formData,
+                      headers: {
+                        Authorization: `Bearer ${myLocalStorage.get("token")}`,
+                      },
+                    });
+
+                    console.log(response);
+                    if (response.status !== 200) {
                       setLoading(false);
                       Swal.fire({
                         customClass: {
@@ -131,37 +189,6 @@ export const ProductListToolbar = () => {
                         window.location.reload();
                       }, 1500);
                     }
-
-                    // let response = await signUpCall(body);
-
-                    // if (response.status !== 200) {
-                    //   setLoading(false);
-
-                    //   Swal.fire({
-                    //     customClass: {
-                    //       container: "my-swal",
-                    //     },
-                    //     title: "Error",
-                    //     text: "Failed to Add User",
-                    //     icon: "error",
-                    //   });
-                    // } else {
-                    //   setLoading(false);
-
-                    //   Swal.fire({
-                    //     customClass: {
-                    //       container: "my-swal",
-                    //     },
-                    //     title: "God job",
-                    //     text: "Correct Add User",
-                    //     icon: "success",
-                    //     showConfirmButton: false,
-                    //     timer: 1500,
-                    //   });
-                    //   setTimeout(() => {
-                    //     window.location.reload();
-                    //   }, 1500);
-                    // }
                   }}
                 >
                   {({
@@ -255,36 +282,56 @@ export const ProductListToolbar = () => {
                               />
                             </Grid>
                             <Grid item xs={12}>
-                              <TextField
-                                required
-                                fullWidth
-                                id="category"
-                                label="Category"
-                                name="category"
-                                autoComplete="off"
-                                value={values.category}
-                                onChange={handleChange}
-                                error={
-                                  touched.category && Boolean(errors.category)
-                                }
-                                helperText={touched.category && errors.category}
-                              />
+                              <FormControl fullWidth error={false}>
+                                <InputLabel id="demo-simple-select-label">
+                                  Category
+                                </InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-label"
+                                  id="category"
+                                  name="category"
+                                  value={values.category}
+                                  label="Category"
+                                  onChange={handleChange}
+                                >
+                                  {categories.map((category, i) => {
+                                    return (
+                                      <MenuItem
+                                        key={i + 1}
+                                        value={category.categoryCode}
+                                      >
+                                        {category.categoryName}
+                                      </MenuItem>
+                                    );
+                                  })}
+                                </Select>
+                              </FormControl>
                             </Grid>
                             <Grid item xs={12}>
-                              <TextField
-                                required
-                                fullWidth
-                                name="supplier"
-                                label="Supplier"
-                                type="supplier"
-                                id="supplier"
-                                value={values.supplier}
-                                onChange={handleChange}
-                                error={
-                                  touched.supplier && Boolean(errors.supplier)
-                                }
-                                helperText={touched.supplier && errors.supplier}
-                              />
+                              <FormControl fullWidth error={false}>
+                                <InputLabel id="demo-simple-select-label">
+                                  Supplier
+                                </InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-label"
+                                  id="supplier"
+                                  name="supplier"
+                                  value={values.supplier}
+                                  label="Supplier"
+                                  onChange={handleChange}
+                                >
+                                  {suppliers.map((suppliers, i) => {
+                                    return (
+                                      <MenuItem
+                                        key={i + 1}
+                                        value={suppliers.supplierNit}
+                                      >
+                                        {suppliers.supplierName}
+                                      </MenuItem>
+                                    );
+                                  })}
+                                </Select>
+                              </FormControl>
                             </Grid>
                             <Grid item xs={12}>
                               <TextField
@@ -306,17 +353,18 @@ export const ProductListToolbar = () => {
                               />
                             </Grid>
                             <Grid item xs={12}>
-                              <TextField
-                                required
+                              <Button
+                                variant="contained"
+                                component="label"
                                 fullWidth
-                                name="image"
-                                label="Image"
-                                id="image"
-                                value={values.image}
-                                onChange={handleChange}
-                                error={touched.image && Boolean(errors.image)}
-                                helperText={touched.image && errors.image}
-                              />
+                              >
+                                Upload File
+                                <input
+                                  type="file"
+                                  hidden
+                                  accept="image/png, image/gif, image/jpeg"
+                                />
+                              </Button>
                             </Grid>
                           </Grid>
                           <LoadingButton

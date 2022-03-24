@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import Swal from "sweetalert2";
 import ReCAPTCHA from "react-google-recaptcha";
-import { signUpCall } from "../../utils";
+import { questionServiceCall, signUpCall } from "../../utils";
 import Header from "../../components/Header/index";
 import { useAuth } from "../../routes/auth-context";
 import {
@@ -18,6 +19,11 @@ import {
   Box,
   Typography,
   Container,
+  Select,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  FormHelperText,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -31,29 +37,40 @@ const theme = createTheme({
 });
 
 export default function SignUp() {
+  const [questions, setQuesitons] = useState([{}]);
   const [captcha, setCaptcha] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [errorPass, setErrorPass] = useState(false);
-  const [errorId, setErrorId] = useState(false);
-  const [errorEmail, setErrorEmail] = useState({
-    format: false,
-    required: false,
-  });
-  const [errorPhone, setErrorPhone] = useState(false);
-  const [errorName, setErrorName] = useState(false);
+  const [errorPass, setErrorPass] = useState();
+  const [errorIdentification, setErrorIdentification] = useState();
+  const [errorEmail, setErrorEmail] = useState();
+  const [errorName, setErrorName] = useState();
+  const [errorPhone, setErrorPhone] = useState();
+  const [errorAddres, setErrorAddres] = useState();
+  const [errorQuestion, setErrorQuestion] = useState(false);
+  const [errorAnswer, setErrorAnswer] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const userProvide = useAuth();
 
+  //Recapchat
   const handleOnChange = (value) => {
     let chunk = value;
     chunk.length !== 0 ? setCaptcha(false) : setCaptcha(true);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     document.title = "Sign Up";
+    try {
+      let response = await questionServiceCall();
+      if (response.status === 200) {
+        let data = await response.json();
+        setQuesitons(data);
+      }
+    } catch {
+      alert("Error question");
+    }
   }, []);
 
   return userProvide.user ? (
@@ -69,15 +86,29 @@ export default function SignUp() {
         password: "",
         address: "",
         identification: "",
+        question: "",
+        answer: "",
       }}
       onSubmit={async (values) => {
-        setLoading(true);
-        if (values.email.includes("@" && ".com")) {
-          // if (
-          //   values.password.length > 8 &&
-          //   values.identification.length > 8 &&
-          //   values.email.includes("@" && ".com")
-          // ) {
+        console.log(values.question);
+        const _password = values.password.length;
+        const _identification = values.identification.length;
+        const _phone = values.telephone.length;
+        const _name = values.name.length;
+        const _address = values.address.length;
+        const _email = values.email;
+        const _question = values.question;
+        const _answer = values.answer.length;
+        if (
+          _password >= 8 &&
+          4 <= _identification <= 12 &&
+          _email.includes("@" && ".com") &&
+          _phone === 10 &&
+          _address > 5 &&
+          _question !== "" &&
+          _answer > 0
+        ) {
+          setLoading(true);
           const body = {
             userId: values.identification,
             userName: `${values.name} ${values.lastName}`,
@@ -85,8 +116,8 @@ export default function SignUp() {
             password: values.password,
             address: values.address,
             phone: values.telephone,
-            questionCode: 3,
-            secureAnswer: "velasques",
+            questionCode: values.question,
+            secureAnswer: values.answer,
           };
           try {
             let response = await signUpCall(body);
@@ -118,26 +149,74 @@ export default function SignUp() {
             setLoading(false);
           }
         } else {
-          //   setLoading(false);
-          //   setErrorPass(true);
-          //   setErrorId(true);
-          setErrorEmail({ format: true });
-          values.password.length <= 1
-            ? setErrorEmail({ required: true })
-            : setErrorEmail({ required: false });
+          if (_password === 0) {
+            setErrorPass("Required");
+          } else {
+            if (_password < 8) {
+              setErrorPass("Minimum 8 characteres");
+            } else {
+              setErrorPass();
+            }
+          }
+          if (_identification === 0) {
+            setErrorIdentification("Required");
+          } else {
+            if (4 > _identification && 12 > _identification) {
+              setErrorIdentification("Minimum 4 and max 12 characteres");
+            } else {
+              setErrorIdentification();
+            }
+          }
+          if (_email.length === 0) {
+            setErrorEmail("Required");
+          } else {
+            if (!_email.includes("@" && ".com")) {
+              setErrorEmail("Must contain @ and .com");
+            } else {
+              setErrorEmail();
+            }
+          }
+          if (_name === 0) {
+            setErrorName("Required");
+          } else {
+            if (_name < 3) {
+              setErrorName("Minimum 4 characteres");
+            } else {
+              setErrorName();
+            }
+          }
+          if (_phone === 0) {
+            setErrorPhone("Required");
+          } else {
+            if (_phone < 10) {
+              setErrorPhone("Must contain 10 characteres");
+            } else {
+              setErrorPhone();
+            }
+          }
+          if (_address === 0) {
+            setErrorAddres("Required");
+          } else {
+            if (_address < 5) {
+              setErrorAddres("Minimum 5 characters");
+            } else {
+              setErrorAddres();
+            }
+          }
+          if (_question === "") {
+            setErrorQuestion(true);
+          } else {
+            setErrorQuestion(false);
+          }
+          if (_answer === 0) {
+            setErrorAnswer(true);
+          } else {
+            setErrorAnswer(false);
+          }
         }
       }}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-        /* and other goodies */
-      }) => (
+      {({ values, handleChange, handleBlur, handleSubmit }) => (
         <ThemeProvider theme={theme}>
           <Header showSearch={false} />
           <Container
@@ -150,7 +229,7 @@ export default function SignUp() {
             <CssBaseline />
             <Box
               sx={{
-                marginTop: 1.5,
+                marginTop: 4,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -163,33 +242,22 @@ export default function SignUp() {
               <Typography component="h1" variant="h5">
                 Sign up
               </Typography>
-              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={7}>
                     <TextField
                       autoComplete="off"
                       name="name"
                       fullWidth
                       value={values.name}
                       id="name"
-                      label="Name"
+                      label="Full name"
                       onChange={handleChange}
-                      // error={touched.name && Boolean(errors.name)}
-                      // helperText={touched.name && errors.name}
+                      error={!!errorName}
+                      helperText={!!errorName && errorName}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      id="lastName"
-                      label="Last Name"
-                      name="lastName"
-                      value={values.lastName}
-                      autoComplete="family-name"
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={5}>
                     <TextField
                       autoComplete="off"
                       name="telephone"
@@ -198,9 +266,11 @@ export default function SignUp() {
                       value={values.telephone}
                       label="Telephone"
                       onChange={handleChange}
+                      error={!!errorPhone}
+                      helperText={!!errorPhone && errorPhone}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={5}>
                     <TextField
                       fullWidth
                       id="identification"
@@ -209,16 +279,11 @@ export default function SignUp() {
                       autoComplete="off"
                       value={values.identification}
                       onChange={handleChange}
-                      // error={errorId}
-                      // helperText={
-                      //   errorId &&
-                      //   (values.identification.length <= 1
-                      //     ? "Required"
-                      //     : "Minimum 8 characters length")
-                      // }
+                      error={!!errorIdentification}
+                      helperText={!!errorIdentification && errorIdentification}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={7}>
                     <TextField
                       fullWidth
                       id="address"
@@ -227,9 +292,11 @@ export default function SignUp() {
                       autoComplete="off"
                       value={values.address}
                       onChange={handleChange}
+                      error={!!errorAddres}
+                      helperText={!!errorAddres && errorAddres}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
                       id="email"
@@ -238,16 +305,11 @@ export default function SignUp() {
                       autoComplete="off"
                       value={values.email}
                       onChange={handleChange}
-                      // error={errorEmail["format"] || errorEmail["required"]}
-                      // helperText={
-                      //   errorEmail &&
-                      //   (values.email.length <= 1
-                      //     ? "Required"
-                      //     : "Invalid Format")
-                      // }
+                      error={!!errorEmail}
+                      helperText={!!errorEmail && errorEmail}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
                       name="password"
@@ -257,13 +319,45 @@ export default function SignUp() {
                       autoComplete="new-password"
                       onChange={handleChange}
                       value={values.password}
-                      // error={errorPass}
-                      // helperText={
-                      //   errorPass &&
-                      //   (values.password.length <= 1
-                      //     ? "Required"
-                      //     : "Minimum 8 characters length")
-                      // }
+                      error={!!errorPass}
+                      helperText={!!errorPass && errorPass}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={7}>
+                    <FormControl fullWidth error={errorQuestion}>
+                      <InputLabel id="demo-simple-select-label">
+                        Question
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="question"
+                        name="question"
+                        value={values.question}
+                        label="Question"
+                        onChange={handleChange}
+                      >
+                        {questions.map((question, i) => {
+                          return (
+                            <MenuItem key={i + 1} value={question.questionCode}>
+                              {question.question}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                      <FormHelperText>Security question</FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                    <TextField
+                      fullWidth
+                      name="answer"
+                      label="Answer"
+                      type="text"
+                      id="answer"
+                      onChange={handleChange}
+                      value={values.answer}
+                      error={errorAnswer}
+                      helperText={errorAnswer && "Required"}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -272,24 +366,6 @@ export default function SignUp() {
                       onChange={handleOnChange}
                     />
                   </Grid>
-                  {
-                    //TODO implementar seleccionar pregunta y contraseña
-                    /* <InputLabel id="demo-simple-select-standard-label"></InputLabel>
-              <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                // value={age}
-                // onChange={handleChange}
-                label="age"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select> */
-                  }
                 </Grid>
                 <LoadingButton
                   disabled={captcha}

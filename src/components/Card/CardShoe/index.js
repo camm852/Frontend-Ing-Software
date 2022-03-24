@@ -3,15 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { findIndexElement } from "../../../utils";
 import { add } from "../../../redux/slices/cartSlice";
 import {
-  Box,
-  Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   styled,
   Typography,
 } from "@mui/material";
+import { open } from "../../../redux/slices/modalCardDetail";
+import { Box } from "@mui/system";
 
 const CardStyle = styled(Card)(({ theme }) => ({
   "&:hover": {
@@ -32,18 +31,22 @@ const CardStyle = styled(Card)(({ theme }) => ({
 }));
 
 export default function CardShoe(props) {
-  const distpatch = useDispatch();
+  const dispatch = useDispatch();
   const shoesRedux = useSelector((state) => state.cart.value);
-  // const handleClick = (value) => {
-  //   distpatch(add(value));
-  // };
+
+  const shoeInformation = {
+    ...props,
+  };
 
   return (
-    <CardStyle sx={{ padding: 1.5 }}>
+    <CardStyle
+      sx={{ padding: 1.5 }}
+      onClick={() => dispatch(open({ ...shoeInformation }))}
+    >
       <CardMedia
         component="img"
-        height="140"
-        image={props.image}
+        height="140px"
+        image={`data:image/jpeg;base64,${props.shoe.imageBytes}`}
         alt={props.alt}
       />
       <CardContent>
@@ -55,22 +58,6 @@ export default function CardShoe(props) {
         </Typography>
         <Typography variant="body2" color="text.secondary"></Typography>
       </CardContent>
-      <CardActions>
-        <Button
-          variant="contained"
-          size="small"
-          sx={{ boxShadow: "none !important", textTransform: "capitalize" }}
-          onClick={() => {
-            if (findIndexElement(shoesRedux, props.code) === -1)
-              distpatch(add({ ...props.shoe, cant: 1 }));
-          }}
-        >
-          {findIndexElement(shoesRedux, props.code) === -1
-            ? "Add to cart"
-            : "Is added"}
-        </Button>
-        <Box sx={{ ml: "20px" }}>{`$ ${props.price}`}</Box>
-      </CardActions>
     </CardStyle>
   );
 }

@@ -5,8 +5,12 @@ import {
   Container,
   CssBaseline,
   Fade,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
   Modal,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,10 +19,12 @@ import React from "react";
 import { LoadingButton } from "@mui/lab";
 import Swal from "sweetalert2";
 import { Formik } from "formik";
+import { cityServiceCall, supplierServiceCall } from "../../utils";
 
 export const SupplierListToolbar = () => {
   const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [cities, setCities] = React.useState([{}]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,6 +40,15 @@ export const SupplierListToolbar = () => {
     boxShadow: 24,
     p: 4,
   };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(async () => {
+    let response = await cityServiceCall();
+    if (response.status === 200) {
+      let data = await response.json();
+      setCities(data);
+    }
+  }, []);
 
   return (
     <Box sx={{ mb: 2 }}>
@@ -82,61 +97,61 @@ export const SupplierListToolbar = () => {
                   initialValues={{
                     nit: "",
                     name: "",
-                    telephone: "",
+                    phone: "",
                     address: "",
                     city: "",
                   }}
                   onSubmit={async (values) => {
                     setLoading(true);
                     const body = {
-                      // userId: values.identification,
-                      // userName: `${values.name} ${values.lastName}`,
-                      // email: values.email,
-                      // password: values.password,
-                      // address: values.address,
-                      // roleCode: 1,
-                      // phone: values.telephone,
+                      supplierNit: values.nit,
+                      supplierName: values.name,
+                      supplierAddress: values.address,
+                      phone: values.phone,
+                      cityCode: values.city,
                     };
-                    // let response = await signUpCall(body);
+                    try {
+                      let response = await supplierServiceCall(body, "add");
 
-                    // if (response.status !== 200) {
-                    //   setLoading(false);
+                      if (response.status !== 200) {
+                        setLoading(false);
+                        let payload = await response.json();
 
-                    //   Swal.fire({
-                    //     customClass: {
-                    //       container: "my-swal",
-                    //     },
-                    //     title: "Error",
-                    //     text: "Failed to Add User",
-                    //     icon: "error",
-                    //   });
-                    // } else {
-                    //   setLoading(false);
+                        Swal.fire({
+                          customClass: {
+                            container: "my-swal",
+                          },
+                          title: "Error",
+                          text: `${payload.message}`,
+                          icon: "error",
+                        });
+                      } else {
+                        setLoading(false);
 
-                    //   Swal.fire({
-                    //     customClass: {
-                    //       container: "my-swal",
-                    //     },
-                    //     title: "God job",
-                    //     text: "Correct Add User",
-                    //     icon: "success",
-                    //     showConfirmButton: false,
-                    //     timer: 1500,
-                    //   });
-                    //   setTimeout(() => {
-                    //     window.location.reload();
-                    //   }, 1500);
-                    // }
+                        Swal.fire({
+                          customClass: {
+                            container: "my-swal",
+                          },
+                          title: "God job",
+                          text: "Correct Add Supplier",
+                          icon: "success",
+                          showConfirmButton: false,
+                          timer: 1500,
+                        });
+                        setTimeout(() => {
+                          window.location.reload();
+                        }, 1500);
+                      }
+                    } catch {
+                      setLoading(false);
+                    }
                   }}
                 >
                   {({
                     values,
-                    errors,
-                    touched,
                     handleChange,
                     handleBlur,
                     handleSubmit,
-                    isSubmitting,
                     /* and other goodies */
                   }) => (
                     <Container component="main" maxWidth="xs">
@@ -169,12 +184,10 @@ export const SupplierListToolbar = () => {
                                 name="nit"
                                 required
                                 fullWidth
-                                value={values.name}
+                                value={values.nit}
                                 id="nit"
                                 label="Nit"
                                 onChange={handleChange}
-                                error={touched.nit && Boolean(errors.nit)}
-                                helperText={touched.nit && errors.nit}
                               />
                             </Grid>
                             <Grid item xs={12} sm={12}>
@@ -187,26 +200,18 @@ export const SupplierListToolbar = () => {
                                 autoComplete="off"
                                 value={values.name}
                                 onChange={handleChange}
-                                error={touched.name && Boolean(errors.name)}
-                                helperText={touched.name && errors.name}
                               />
                             </Grid>
                             <Grid item xs={12} sm={12}>
                               <TextField
                                 autoComplete="off"
-                                name="telephone"
+                                name="phone"
                                 required
                                 fullWidth
-                                id="telephone"
-                                value={values.telephone}
+                                id="phone"
+                                value={values.phone}
                                 label="Telephone"
                                 onChange={handleChange}
-                                error={
-                                  touched.telephone && Boolean(errors.telephone)
-                                }
-                                helperText={
-                                  touched.telephone && errors.telephone
-                                }
                               />
                             </Grid>
                             <Grid item xs={12}>
@@ -219,27 +224,34 @@ export const SupplierListToolbar = () => {
                                 autoComplete="off"
                                 value={values.address}
                                 onChange={handleChange}
-                                error={
-                                  touched.address && Boolean(errors.address)
-                                }
-                                helperText={touched.address && errors.address}
                               />
                             </Grid>
 
-                            <Grid item xs={12}>
-                              <TextField
-                                required
-                                fullWidth
-                                name="city"
-                                label="City"
-                                type="city"
-                                id="city"
-                                autoComplete="new-password"
-                                value={values.city}
-                                onChange={handleChange}
-                                error={touched.city && Boolean(errors.city)}
-                                helperText={touched.city && errors.city}
-                              />
+                            <Grid item xs={12} sm={12}>
+                              <FormControl fullWidth error={false}>
+                                <InputLabel id="demo-simple-select-label">
+                                  City
+                                </InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-label"
+                                  id="city"
+                                  name="city"
+                                  value={values.city}
+                                  label="City"
+                                  onChange={handleChange}
+                                >
+                                  {cities.map((city, i) => {
+                                    return (
+                                      <MenuItem
+                                        key={i + 1}
+                                        value={city.cityCode}
+                                      >
+                                        {city.cityName}
+                                      </MenuItem>
+                                    );
+                                  })}
+                                </Select>
+                              </FormControl>
                             </Grid>
                           </Grid>
                           <LoadingButton

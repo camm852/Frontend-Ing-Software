@@ -180,9 +180,9 @@ export default function Header({ showSearch, cantidad }) {
                 item
                 xs={3}
                 sm={2}
-                md={3}
+                md={4}
                 lg={3}
-                xl={3}
+                xl={4}
                 sx={{
                   display: "flex",
                   justifyContent: "flex-end",
@@ -215,20 +215,36 @@ export default function Header({ showSearch, cantidad }) {
                 >
                   {/* Contenido Modal */}
 
-                  <Box sx={{ width: "300px" }}>
-                    {arrayShoe.map((shoe, i) => {
-                      let indexShoe = findIndexElement(shoesRedux, shoe.code);
-                      if (indexShoe >= 0) {
-                        // const objectShoe = JSON.parse(shoes[indexShoe]);
-                        return (
-                          <CardCart
-                            key={i}
-                            shoe={JSON.parse(shoesRedux[indexShoe])}
-                            index={indexShoe}
-                          />
-                        );
-                      }
+                  <Box
+                    sx={{
+                      width: "300px",
+                      height: "90vh",
+                      overflowY: "auto",
+                    }}
+                  >
+                    {shoesRedux.map((shoe, i) => {
+                      return <CardCart key={i} shoe={shoe} index={i} />;
                     })}
+                  </Box>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      mt: "92vh",
+                      width: "90%",
+                    }}
+                  >
+                    {shoesRedux.length > 0 && (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        sx={{ marginLeft: "15px", padding: "10px" }}
+                        onClick={() => {
+                          navigate("/checkout");
+                        }}
+                      >
+                        Checkout
+                      </Button>
+                    )}
                   </Box>
                 </SwipeableDrawer>
 
@@ -237,6 +253,9 @@ export default function Header({ showSearch, cantidad }) {
                 <Button
                   color="inherit"
                   sx={{
+                    [theme.breakpoints.down("lg")]: {
+                      fontSize: ".65em",
+                    },
                     fontSize: ".8em",
                     mr: "1%",
                     ml: "10px",
