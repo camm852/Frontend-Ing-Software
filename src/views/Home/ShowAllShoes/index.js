@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import CardShoe from "../../../components/Card/CardShoe/index";
 import { Box } from "@mui/material";
 import { shoesServiceApiCall } from "../../../utils";
+import { arrayShoe } from "../../../assets/ShoesJson";
 
 export default function ShowShoes() {
-  const [arrayShoe, setArrayShoe] = useState([{}]);
+  // const [arrayShoe, setArrayShoe] = useState([{}]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
+  useEffect(() => {
     document.title = "Home";
-    let response = await shoesServiceApiCall({ service: "get" });
-    let info = await response.json();
-    setArrayShoe(info);
+    // const getAllShoes = async () => {
+    //   let response = await shoesServiceApiCall({ service: "get" });
+    //   let info = await response.json();
+    //   setArrayShoe(arraySHoe);
+    // };
+    // getAllShoes();
   }, []);
 
   return (

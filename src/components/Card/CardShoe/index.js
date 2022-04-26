@@ -41,7 +41,8 @@ export default function CardShoe(props) {
       <CardMedia
         component="img"
         height="140px"
-        image={`data:image/jpeg;base64,${props.shoe.imageBytes}`}
+        // image={`data:image/jpeg;base64,${props.shoe.imageBytes}`}
+        image={`${props.shoe.image}`}
         alt={props.alt}
       />
       <CardContent>

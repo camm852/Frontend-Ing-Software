@@ -24,8 +24,19 @@ export const UserListResults = () => {
   const [usersFilter, setUsersFilter] = useState([{}]);
   const [page, setPage] = useState(1);
 
-  const perPage = 5;
+  React.useEffect(() => {
+    const getAllUsers = async () => {
+      let response = await userServiceCall({ type: "list", service: "user" });
+      if (response.status === 200) {
+        const data = await response.json();
+        setUsers(data);
+        setUsersFilter(data);
+      }
+    };
+    getAllUsers();
+  }, []);
 
+  const perPage = 5;
   const count = Math.ceil(usersFilter.length / perPage);
   const _Users = usePagination(usersFilter, perPage);
 
@@ -44,16 +55,6 @@ export const UserListResults = () => {
       setUsersFilter(dataFilter);
     }
   };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(async () => {
-    let response = await userServiceCall({ type: "list", service: "user" });
-    if (response.status === 200) {
-      const data = await response.json();
-      setUsers(data);
-      setUsersFilter(data);
-    }
-  }, []);
 
   return (
     <Card>

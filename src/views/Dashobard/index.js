@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import DashBoardSidebar from "../../components/DashBoardSidebar";
 import React, { useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -34,13 +33,16 @@ export default function Dashboard() {
     _Orders.jump(page);
   };
 
-  useEffect(async () => {
-    let response = await orderServiceApiCall({ service: "get" });
-    if (response.status === 200) {
-      let info = await response.json();
-      setOrders(info);
-      setOrdersFilter(info);
-    }
+  useEffect(() => {
+    const getAllOrders = async () => {
+      let response = await orderServiceApiCall({ service: "get" });
+      if (response.status === 200) {
+        let info = await response.json();
+        setOrders(info);
+        setOrdersFilter(info);
+      }
+    };
+    getAllOrders();
   }, []);
   useEffect(() => {
     document.title = "Dashboard";

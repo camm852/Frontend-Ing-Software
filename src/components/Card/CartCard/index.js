@@ -16,17 +16,18 @@ import {
   styled,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { arrayShoe } from "../../../assets/ShoesJson";
 
 export default function CardCart(props) {
   const dispatch = useDispatch();
 
   const CardStyle = styled(Card)(({ theme }) => ({
-    "&:hover": {},
     "&": {
       marginTop: "10px",
       marginBottom: "10px",
       maxWidth: "250px",
     },
+    "&:hover": {},
     [theme.breakpoints.up("lg")]: {
       marginLeft: "20px",
     },
@@ -52,7 +53,7 @@ export default function CardCart(props) {
           <CardContent sx={{ mb: -3 }}>
             <Box sx={{ display: "block" }}>
               <Typography gutterBottom variant="h5" component="div">
-                {props.shoe.shoeName}
+                {props.shoe.name}
               </Typography>
             </Box>
 
@@ -101,7 +102,8 @@ export default function CardCart(props) {
         <Box>
           <CardMedia
             component="img"
-            image={`data:image/jpeg;base64,${props.shoe.imageBytes}`}
+            // image={`data:image/jpeg;base64,${props.shoe.imageBytes}`}
+            image={`${props.shoe.image}`}
             sx={{ width: "120px", pt: "40px" }}
           />
         </Box>

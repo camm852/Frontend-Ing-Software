@@ -22,10 +22,20 @@ import { shoesServiceApiCall } from "../../utils";
 export const ProductListResults = () => {
   const [shoes, setShoes] = useState([{}]);
   const [shoesFilter, setShoesFilter] = useState([{}]);
+  const [page, setPage] = useState(1);
+
+  React.useEffect(() => {
+    const getAllShoes = async () => {
+      let response = await shoesServiceApiCall({ service: "get" });
+      let info = await response.json();
+      setShoes(info);
+      setShoesFilter(info);
+    };
+
+    getAllShoes();
+  }, []);
 
   const perPage = 5;
-
-  const [page, setPage] = useState(1);
   const count = Math.ceil(shoesFilter.length / perPage);
 
   let _Shoes = usePagination(shoesFilter, perPage);
@@ -45,14 +55,6 @@ export const ProductListResults = () => {
       setShoesFilter(dataFilter);
     }
   };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(async () => {
-    let response = await shoesServiceApiCall({ service: "get" });
-    let info = await response.json();
-    setShoes(info);
-    setShoesFilter(info);
-  }, []);
 
   return (
     <Card>

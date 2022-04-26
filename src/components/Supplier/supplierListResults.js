@@ -22,11 +22,21 @@ import { supplierServiceCall } from "../../utils";
 export const SupplierListResults = () => {
   const [suppliers, setSuppliers] = useState([{}]);
   const [suppliersFilter, setSuppliersFilter] = useState([{}]);
-
   const [page, setPage] = useState(1);
 
-  const perPage = 5;
+  React.useEffect(() => {
+    const getAllSuppliers = async () => {
+      let response = await supplierServiceCall(null, "list");
+      if (response.status === 200) {
+        let data = await response.json();
+        setSuppliers(data);
+        setSuppliersFilter(data);
+      }
+    };
+    getAllSuppliers();
+  }, []);
 
+  const perPage = 5;
   const count = Math.ceil(suppliersFilter.length / perPage);
   const _Suppliers = usePagination(suppliersFilter, perPage);
 
@@ -45,15 +55,6 @@ export const SupplierListResults = () => {
     setPage(page);
     _Suppliers.jump(page);
   };
-
-  React.useEffect(async () => {
-    let response = await supplierServiceCall(null, "list");
-    if (response.status === 200) {
-      let data = await response.json();
-      setSuppliers(data);
-      setSuppliersFilter(data);
-    }
-  }, []);
 
   return (
     <Card>

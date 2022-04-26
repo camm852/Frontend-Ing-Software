@@ -79,15 +79,14 @@ function ModalCardDetail() {
             {cardDetailVisible ? (
               <Box>
                 <CardHeader
-                  title={
-                    cardDetails.shoe.shoeName + " $" + cardDetails.shoe.price
-                  }
+                  title={cardDetails.shoe.name + " $" + cardDetails.shoe.price}
                   sx={{ alignText: "center" }}
                 />
                 <CardMedia
                   component="img"
                   height="194"
-                  image={`data:image/jpeg;base64,${cardDetails.shoe.imageBytes}`}
+                  // image={`data:image/jpeg;base64,${cardDetails.shoe.imageBytes}`}
+                  image={`${cardDetails.shoe.image}`}
                   alt="Paella dish"
                 />
                 <CardContent>
@@ -109,16 +108,13 @@ function ModalCardDetail() {
                     }}
                     onClick={() => {
                       if (
-                        findIndexElement(
-                          shoesRedux,
-                          cardDetails.shoe.shoeCode
-                        ) === -1
+                        findIndexElement(shoesRedux, cardDetails.shoe.code) ===
+                        -1
                       )
                         dispatch(add({ ...cardDetails.shoe, cant: 1 }));
                     }}
                   >
-                    {findIndexElement(shoesRedux, cardDetails.shoe.shoeCode) !==
-                    -1
+                    {findIndexElement(shoesRedux, cardDetails.shoe.code) !== -1
                       ? "Is added"
                       : "Add to cart"}
                   </Button>

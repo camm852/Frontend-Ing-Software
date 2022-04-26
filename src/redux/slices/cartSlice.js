@@ -22,7 +22,7 @@ export const cartSlice = createSlice({
     deleteShoe: (state, action) => {
       let shoes = state.value;
       let shoe = state.value[action.payload];
-      let newShoes = shoes.filter((item) => item.shoeCode !== shoe.shoeCode);
+      let newShoes = shoes.filter((item) => item.code !== shoe.code);
       state.value = newShoes;
     },
     clearShoes: (state, action) => {

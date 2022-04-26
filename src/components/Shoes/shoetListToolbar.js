@@ -25,43 +25,49 @@ import {
   supplierServiceCall,
 } from "../../utils";
 
+const style = {
+  position: "absolute",
+  borderRadius: "30px",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
+
 export const ProductListToolbar = () => {
   const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [categories, setCategories] = React.useState([{}]);
   const [suppliers, setSuppliers] = React.useState([{}]);
+
+  React.useEffect(() => {
+    const getAllCategories = async () => {
+      let response = await categoryServiceApiCall();
+      if (response.status === 200) {
+        let info = await response.json();
+        setCategories(info);
+      }
+    };
+    getAllCategories();
+  }, []);
+
+  React.useEffect(() => {
+    const getAllSuppliers = async () => {
+      let response = await supplierServiceCall(null, "list");
+      if (response.status === 200) {
+        let info = await response.json();
+        setSuppliers(info);
+      }
+    };
+
+    getAllSuppliers();
+  }, []);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const style = {
-    position: "absolute",
-    borderRadius: "30px",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 4,
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(async () => {
-    let response = await categoryServiceApiCall();
-    if (response.status === 200) {
-      let info = await response.json();
-      setCategories(info);
-    }
-  }, []);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(async () => {
-    let response = await supplierServiceCall(null, "list");
-    if (response.status === 200) {
-      let info = await response.json();
-      setSuppliers(info);
-    }
-  }, []);
 
   return (
     <Box sx={{ mb: 2 }}>

@@ -10,6 +10,7 @@ import box from "../../assets/images/box.svg";
 import shield from "../../assets/images/shield.svg";
 import ShowAllShoes from "./ShowAllShoes/index";
 import Footer from "../../components/Footer/FooterHome/index";
+import { arrayShoe } from "../../assets/ShoesJson";
 import {
   Box,
   Button,
@@ -27,16 +28,20 @@ import { shoesServiceApiCall } from "../../utils";
 const items = [brahma, precios, ultimos];
 
 export default function Home() {
-  //States
-
-  const [arrayShoe, setArrayShoe] = useState([{}]);
+  // const [arrayShoe, setArrayShoe] = useState([{}]);
   const [showAll, setShowAll] = useState(false);
 
-  //Refs
+  // useEffect(() => {
+  //   document.title = "Home";
+  //   const getAllShoes = async() =>{
+  //   let response = await shoesServiceApiCall({ service: "get" });
+  //   let info = await response.json();
+  //   setArrayShoe(info);
+  //   }
+  //   getAllShoes()
+  // }, []);
 
   const carouselImagesRef = useRef(null);
-
-  //Funcitons
 
   const handleShowAllShoes = () => setShowAll(true);
   const handleComeBack = () => setShowAll(false);
@@ -59,14 +64,6 @@ export default function Home() {
     { width: theme.breakpoints.values.md, itemsToShow: 4 },
     { width: theme.breakpoints.values.lg, itemsToShow: 5 },
   ];
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    document.title = "Home";
-    let response = await shoesServiceApiCall({ service: "get" });
-    let info = await response.json();
-    setArrayShoe(info);
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -162,7 +159,7 @@ export default function Home() {
                         alt={shoe.alt}
                         description={shoe.description}
                         price={shoe.price}
-                        image={shoe.imageBytes}
+                        image={shoe.image}
                         shoe={shoe}
                       />
                     );

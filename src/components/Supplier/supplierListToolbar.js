@@ -21,34 +21,36 @@ import Swal from "sweetalert2";
 import { Formik } from "formik";
 import { cityServiceCall, supplierServiceCall } from "../../utils";
 
+const style = {
+  position: "absolute",
+  borderRadius: "30px",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
+
 export const SupplierListToolbar = () => {
   const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [cities, setCities] = React.useState([{}]);
 
+  React.useEffect(() => {
+    const getAllCities = async () => {
+      let response = await cityServiceCall();
+      if (response.status === 200) {
+        let data = await response.json();
+        setCities(data);
+      }
+    };
+    getAllCities();
+  }, []);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const style = {
-    position: "absolute",
-    borderRadius: "30px",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 4,
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(async () => {
-    let response = await cityServiceCall();
-    if (response.status === 200) {
-      let data = await response.json();
-      setCities(data);
-    }
-  }, []);
 
   return (
     <Box sx={{ mb: 2 }}>
