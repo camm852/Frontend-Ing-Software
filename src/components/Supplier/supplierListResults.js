@@ -25,15 +25,15 @@ export const SupplierListResults = () => {
   const [page, setPage] = useState(1);
 
   React.useEffect(() => {
-    const getAllSuppliers = async () => {
-      let response = await supplierServiceCall(null, "list");
-      if (response.status === 200) {
-        let data = await response.json();
-        setSuppliers(data);
-        setSuppliersFilter(data);
-      }
-    };
-    getAllSuppliers();
+    // const getAllSuppliers = async () => {
+    //   let response = await supplierServiceCall(null, "list");
+    //   if (response.status === 200) {
+    //     let data = await response.json();
+    //     setSuppliers(data);
+    //     setSuppliersFilter(data);
+    //   }
+    // };
+    // getAllSuppliers();
   }, []);
 
   const perPage = 5;

@@ -25,14 +25,13 @@ export const ProductListResults = () => {
   const [page, setPage] = useState(1);
 
   React.useEffect(() => {
-    const getAllShoes = async () => {
-      let response = await shoesServiceApiCall({ service: "get" });
-      let info = await response.json();
-      setShoes(info);
-      setShoesFilter(info);
-    };
-
-    getAllShoes();
+    // const getAllShoes = async () => {
+    //   let response = await shoesServiceApiCall({ service: "get" });
+    //   let info = await response.json();
+    //   setShoes(info);
+    //   setShoesFilter(info);
+    // };
+    // getAllShoes();
   }, []);
 
   const perPage = 5;
