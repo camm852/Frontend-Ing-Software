@@ -19,3 +19,6 @@ El despliegue de la app lo pueden encontrar en heroku [Zhoppy](https://zhoppyapp
   3.  GatewayService
   4.  AuthJWTService
   5.  UserService
+
+
+Aclarar que en el registro pide pregunta de seguridad y respuesta, habria que eliminar estos inputs del formulario y de la api.
